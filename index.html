@@ -69,21 +69,30 @@ loadProgress();renderProgress();loadDailyTrick();
 
 <script>
 function showTrickInfographic(imageUrl) {
-  const container = document.getElementById("trick-infographic");
+  const container = document.getElementById('trick-infographic');
+
+  if (!container) {
+    console.error('Infographic container not found');
+    return;
+  }
+
   container.replaceChildren();
 
-  if (!imageUrl) return;
+  console.log('Infographic URL:', imageUrl);
 
-  const img = document.createElement("img");
+  if (!imageUrl) {
+    container.textContent = 'No infographic URL received.';
+    return;
+  }
+
+  const img = document.createElement('img');
   img.src = imageUrl;
-  img.alt = "Math Magic trick infographic";
-  img.loading = "lazy";
-  img.style.maxWidth = "100%";
-  img.style.height = "auto";
-  img.onerror = () => {
-    container.textContent =
-      "Infographic unavailable. Please check its Google Drive sharing settings.";
-  };
+  img.alt = 'Math Magic trick infographic';
+  img.style.maxWidth = '100%';
+  img.style.height = 'auto';
+
+  img.onload = () => console.log('Infographic loaded successfully');
+  img.onerror = () => console.error('Infographic image failed to load');
 
   container.appendChild(img);
 }
