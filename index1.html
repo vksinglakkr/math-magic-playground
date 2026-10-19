@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f2e6b">
+<title>Digital Saathi | Math Magic Playground</title>
+<meta name="description" content="Daily Math Magic tricks, clear explanations, practice questions and challenges from Digital Saathi.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0f2e6b;--ink:#14213d;--blue:#2563eb;--indigo:#4f46e5;--green:#12a150;--red:#d92d20;--yellow:#ffd23f;--bg:#f4f7fc;--card:#fff;--line:#e3e9f4;--muted:#5d6a84;--r:20px;--shadow:0 10px 30px rgba(15,46,107,.10);--head:'Poppins','Inter',system-ui,sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.6 'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+h1,h2,h3{font-family:var(--head);line-height:1.2;margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px;border-radius:8px}
+.wrap{max-width:1100px;margin:auto;padding:0 18px}
+section[id]{scroll-margin-top:78px}
+
+/* header */
+.top{position:sticky;top:0;z-index:50;background:rgba(15,46,107,.96);backdrop-filter:blur(10px);color:#fff;padding-top:env(safe-area-inset-top)}
+.topinner{height:64px;display:flex;align-items:center;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto}
+.mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--yellow),#ff9f1c);color:var(--navy);display:grid;place-items:center;font:800 1.3rem var(--head)}
+.brand{font:700 1.05rem/1 var(--head);letter-spacing:.4px}.brand span{color:var(--yellow)}
+.tagline{font-size:.7rem;color:#c9d8ff;margin-top:3px;letter-spacing:.3px}
+.nav{display:none;gap:6px}
+.nav a{text-decoration:none;font-size:.92rem;font-weight:600;padding:8px 14px;border-radius:999px;color:#dbe6ff;transition:.2s}
+.nav a:hover,.nav a.active{background:rgba(255,255,255,.14);color:#fff}
+.chip{background:rgba(255,255,255,.14);border-radius:999px;padding:6px 14px;font-weight:700;font-size:.9rem;white-space:nowrap}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:linear-gradient(140deg,#0f2e6b 0%,#2342a8 55%,#4f46e5 100%);color:#fff;padding:34px 0 56px}
+.hero::before,.hero::after{content:"+ − × ÷ = π √ ∑";position:absolute;font:700 4.5rem var(--head);color:rgba(255,255,255,.06);white-space:nowrap;pointer-events:none;letter-spacing:28px}
+.hero::before{top:-6px;left:-20px}.hero::after{bottom:-10px;right:-60px;transform:rotate(-6deg)}
+.hero-grid{position:relative;z-index:1;display:grid;gap:26px;align-items:center}
+.eyebrow{display:inline-block;background:rgba(255,210,63,.18);color:var(--yellow);padding:6px 12px;border-radius:999px;font-weight:700;font-size:.74rem;letter-spacing:.8px}
+.hero h1{font-size:clamp(2rem,7vw,3.4rem);margin:14px 0 12px;letter-spacing:-.5px}
+.hero h1 em{font-style:normal;color:var(--yellow)}
+.hero p.sub{color:#d6e2ff;font-size:1.02rem;max-width:520px;margin:0 0 20px}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.status{font-size:.8rem;margin:14px 0 0;color:#c9d8ff}.status.ok{color:#8ff0b5}.status.warn{color:#ffe08a}
+
+/* buttons */
+.button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 20px;border-radius:14px;border:0;font:700 .95rem 'Inter',sans-serif;text-decoration:none;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s}
+.button:active{transform:scale(.97)}
+.primary{background:var(--blue);color:#fff;box-shadow:0 6px 16px rgba(37,99,235,.3)}.primary:hover{background:#1d4ed8}
+.yellow{background:var(--yellow);color:var(--navy);box-shadow:0 6px 16px rgba(255,210,63,.35)}
+.secondary{background:#fff;color:var(--navy);border:1.5px solid #cfdaf0}.secondary:hover{background:#f0f5ff}
+.ghost{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.35)}
+
+/* today card */
+.today-card{background:#fff;color:var(--ink);border-radius:24px;padding:22px;box-shadow:0 24px 50px rgba(5,20,60,.35)}
+.today-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pill{display:inline-block;padding:5px 11px;border-radius:999px;background:#e6f7ee;color:#0e7a3e;font-size:.72rem;font-weight:800;letter-spacing:.5px}
+.date{font-size:.8rem;color:var(--muted);font-weight:500}
+.today-card h2{font-size:1.4rem;margin:14px 0 4px}
+.small{font-size:.88rem;color:var(--muted);margin:0}
+#trick-infographic{margin:12px 0}#trick-infographic img{display:block;width:100%;border-radius:14px;border:1px solid var(--line)}
+.equation{margin:14px 0;padding:18px 10px;text-align:center;font:800 clamp(1.5rem,6.5vw,2.5rem)/1.2 var(--head);color:var(--navy);background:linear-gradient(135deg,#eef3ff,#f7f4ff);border:1px dashed #b7c8f2;border-radius:16px;overflow-wrap:anywhere}
+.step{display:flex;gap:12px;margin:12px 0;align-items:flex-start}
+.stepno{flex:0 0 32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--indigo));color:#fff;display:grid;place-items:center;font:700 .9rem var(--head)}
+.step p{margin:3px 0 0}
+.hint{background:#fff8dc;border:1px solid #f1dc7c;border-radius:14px;padding:12px 14px;margin-top:14px;font-size:.93rem}
+
+/* how it works */
+.how{margin-top:-28px;position:relative;z-index:2}
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.how-item{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center;box-shadow:var(--shadow);font-weight:600;font-size:.88rem}
+.how-item b{display:block;font-size:1.6rem;margin-bottom:2px}
+
+/* sections */
+.section{padding:36px 0 6px}
+.section h2{font-size:clamp(1.4rem,4.5vw,1.9rem)}
+.lead{color:var(--muted);margin:6px 0 18px}
+.card,.practice-card,.certificate-panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.grid3{display:grid;gap:14px}
+.card h3{font-size:1.1rem;margin-bottom:6px}.card p{margin:0 0 14px;color:var(--muted)}
+
+/* questions */
+.question{padding:16px;border:1.5px solid var(--line);border-radius:16px;margin-bottom:14px;background:#fbfcff;transition:.2s}
+.question:has(.feedback.correct){border-color:#8fd9ae;background:#f3fbf6}
+.question:has(.feedback.wrong){border-color:#f3b4ae;background:#fff7f6}
+.question label{display:block;font:700 1.15rem var(--head);margin-bottom:12px;color:var(--navy)}
+.answerrow,.bonus-row{display:flex;gap:10px}
+.answerrow input,.bonus-row input,.field{min-width:0;flex:1;width:100%;border:1.5px solid #c8d3e8;border-radius:14px;padding:12px 14px;min-height:50px;font:600 1.1rem 'Inter',sans-serif;background:#fff;color:var(--ink)}
+.answerrow input:focus,.bonus-row input:focus,.field:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(37,99,235,.15)}
+.feedback{font-size:.92rem;margin-top:10px}.feedback:empty{display:none}
+.feedback.correct{color:#0d6b37;font-weight:600;background:#e6f7ee;padding:10px 12px;border-radius:12px}
+.feedback.wrong{color:#a8231a;font-weight:600;background:#fdecea;padding:10px 12px;border-radius:12px}
+
+/* progress */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:linear-gradient(135deg,#eef3ff,#f6f3ff);border-radius:16px;padding:14px 6px;text-align:center}
+.stat strong{display:block;font:800 1.7rem var(--head);color:var(--navy)}.stat small{color:var(--muted);font-size:.78rem}
+.card h3.sub{margin:20px 0 10px}
+.badge-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.badge{border-radius:999px;padding:8px 14px;background:#eef0f4;color:#8a94a8;font-size:.86rem;font-weight:600;filter:grayscale(1);opacity:.75;transition:.3s}
+.badge.earned{background:#fff1bd;color:#7a4b00;filter:none;opacity:1;box-shadow:0 4px 12px rgba(255,190,40,.35)}
+
+/* challenge */
+.challenge{background:linear-gradient(135deg,#0f2e6b,#4f46e5);color:#fff;border-radius:24px;padding:24px;box-shadow:var(--shadow)}
+.challenge h2{margin:10px 0 6px}.challenge p{color:#dbe6ff;margin:0 0 14px}
+.challenge label{display:block;font:700 1.25rem var(--head);margin-bottom:10px}
+.challenge .pill{background:#fff0b8;color:#7a4b00}
+.challenge .feedback{color:#fff}.challenge .feedback:empty{display:none}
+.challenge .feedback{background:rgba(255,255,255,.14);padding:10px 12px;border-radius:12px}
+.challenge .share{margin-top:14px}
+
+/* certificates */
+.notice{background:#fff8dc;border:1px solid #f1dc7c;border-radius:14px;padding:12px 14px;font-size:.9rem}
+.notice summary{cursor:pointer;font-weight:700}.notice p{margin:8px 0 0}
+.certificate-panel label{display:block;font-weight:600;font-size:.92rem;margin:16px 0 6px}
+.action-row{display:grid;gap:10px;margin-top:14px}
+#certificateStatus{margin-top:14px;background:#f3f6fc;color:var(--muted);padding:10px 12px;border-radius:12px}
+#certificateStatus.wrong{background:#fdecea}
+#leaderboardWrap{overflow-x:auto;margin-top:8px}#leaderboardWrap h3{margin:20px 0 8px;font-size:1.15rem}
+.leaderboard{width:100%;border-collapse:collapse;min-width:300px}
+.leaderboard th,.leaderboard td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);font-size:.92rem}
+.leaderboard th{color:var(--muted);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
+.leaderboard tr:nth-child(-n+4) td:first-child{font-weight:800;color:#b36b00}
+
+/* footer + bottom nav */
+.footer{background:#0b2457;color:#fff;padding:28px 0;margin-top:40px;font-size:.92rem}
+.footer small{color:#aebfe8;display:block;margin-top:8px}
+.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(15,46,107,.1);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+.bottomnav a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;text-decoration:none;font-size:.7rem;font-weight:600;color:var(--muted);border-radius:12px;min-height:48px}
+.bottomnav a span{font-size:1.25rem;line-height:1}
+.bottomnav a.active{color:var(--blue);background:#eef3ff}
+
+@media(min-width:700px){.how-grid{grid-template-columns:repeat(4,1fr)}.grid3{grid-template-columns:repeat(3,1fr)}.action-row{grid-template-columns:repeat(2,1fr)}.hero{padding:48px 0 70px}}
+@media(min-width:900px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:40px}.nav{display:flex}.bottomnav{display:none}body{padding-bottom:0}.today-card{padding:28px}.action-row{grid-template-columns:repeat(4,auto);justify-content:start}}
+@media(max-width:380px){.answerrow,.bonus-row{flex-direction:column}.button{width:100%}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{.top,.bottomnav,.hero::before,.hero::after{display:none}}
+</style></head><body>
+
+<header class="top"><div class="wrap topinner">
+<a class="logo" href="#today" aria-label="Digital Saathi home"><div class="mark">∑</div><div><div class="brand">DIGITAL <span>SAATHI</span></div><div class="tagline">Seekho • Samjho • Aage Badho</div></div></a>
+<nav class="nav" aria-label="Main navigation"><a href="#today" data-nav="today">Today's Trick</a><a href="#practice" data-nav="practice">Practice</a><a href="#progress" data-nav="progress">My Progress</a><a href="#challenge" data-nav="challenge">Challenge</a></nav>
+<div class="chip" title="Your points">⭐ <span id="ptsChip">0</span></div>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap hero-grid">
+<div><span class="eyebrow">MATH MAGIC PLAYGROUND · AGE 10+</span>
+<h1>Math ko banao <em>Magic Game!</em></h1>
+<p class="sub">Learn one clever trick, understand how it works, then practise until you can amaze your friends. New material every day.</p>
+<div class="cta"><a class="button yellow" href="#practice">Try Today's Practice ↓</a><a class="button ghost" href="#today">Learn the Trick</a></div>
+<p id="dataStatus" class="status" role="status">Loading today's trick…</p></div>
+<article class="today-card" id="today"><div class="today-top"><span class="pill">✨ TODAY'S TRICK</span><span class="date" id="todayDate">Loading date…</span></div>
+<h2 id="trickTitle">Loading today's trick…</h2><p id="trickIntro" class="small"></p>
+<div id="trick-infographic"></div><div class="equation" id="mainEquation"></div><div id="steps"></div>
+<div class="hint"><strong>💡 Remember:</strong> <span id="trickHint"></span></div><p class="small" id="trickNote" style="margin-top:10px"></p></article>
+</div></section>
+
+<section class="how"><div class="wrap"><div class="how-grid">
+<div class="how-item"><b>👀</b>See it</div><div class="how-item"><b>💡</b>Understand it</div><div class="how-item"><b>✍️</b>Try it yourself</div><div class="how-item"><b>🏅</b>Track progress</div>
+</div></div></section>
+
+<section class="section" id="practice"><div class="wrap"><h2>Practice Arena</h2><p class="lead">Use today's trick. Type the answer as digits only, then press Check.</p>
+<div class="practice-card" id="practiceQuestions"><p>Loading practice questions…</p></div></div></section>
+
+<section class="section" id="progress"><div class="wrap"><h2>My Progress</h2><p class="lead">Saved only in this browser on this device. No account needed.</p>
+<div class="card"><div class="stats"><div class="stat"><strong id="points">0</strong><small>Points</small></div><div class="stat"><strong id="correct">0</strong><small>Correct answers</small></div><div class="stat"><strong id="sets">0/1</strong><small>Sets completed</small></div></div>
+<h3 class="sub">My badges</h3><div class="badge-list"><span class="badge" id="badgeFirst">🌱 First Steps</span><span class="badge" id="badgeAcc">🎯 Accuracy Ace</span><span class="badge" id="badgeSet">✍️ Practice Finisher</span></div>
+<p class="small" style="margin-bottom:14px">Personal progress stays on this device. Only an optional nickname and practice scores go to the shared leaderboard. A random browser token is sent over HTTPS; the server stores only its hash.</p>
+<button class="button secondary" onclick="resetProgress()">Reset my local progress</button></div></div></section>
+
+<section class="section" id="challenge"><div class="wrap"><div class="challenge"><span class="pill">🎯 DAILY CHALLENGE</span><h2>Challenge a friend!</h2>
+<p id="bonusIntro">Try the bonus question. Check your answer, then share the challenge with a friend.</p>
+<label id="bonusLabel" for="bonus">Bonus question</label>
+<div class="bonus-row"><input id="bonus" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="Enter your answer"><button class="button yellow" onclick="checkBonus()">Check</button></div>
+<div id="bonusFeedback" class="feedback" aria-live="polite"></div>
+<div class="share"><button class="button ghost" onclick="shareChallenge()">📤 Share this challenge</button></div></div></div></section>
+
+<section class="section" id="certificates"><div class="wrap"><h2>Certificates & Top 10</h2><p class="lead">Motivation-first: no real name, phone number, email or account required.</p>
+<div class="certificate-panel"><details class="notice"><summary>🔒 Privacy first — read details</summary><p>Learning works without a nickname. A nickname is optional and is used only to combine scores for the series-long Top 10. The same nickname on different browsers is kept separate using a private browser token. The certificate name is requested only when downloading; it is not saved in Google Sheets. Leave it blank to print “Math Magic Learner”.</p></details>
+<label for="publicNickname">Optional nickname for Top 10 (3–24 characters)</label>
+<input class="field" id="publicNickname" maxlength="24" autocomplete="off" placeholder="e.g. MathStar27">
+<p class="small" style="margin-top:6px">Use the same nickname on future visits if you want scores to combine.</p>
+<div class="action-row"><button class="button primary" onclick="saveNicknameAndRefresh()">Use nickname</button><button class="button secondary" onclick="refreshCertificateStatus()">Check eligibility</button><button class="button secondary" onclick="requestCertificate()">🎓 Download certificate</button><button class="button secondary" onclick="loadLeaderboard()">Refresh Top 10</button></div>
+<p id="certificateStatus" class="feedback" role="status" aria-live="polite">Practise on five different daily tricks. A nickname is optional; progress without one stays on this device.</p>
+<div id="leaderboardWrap"><h3>🏆 Top 10 — entire series</h3><p class="small">Top 10 appears when the score endpoint is connected.</p></div><div id="certificateResult" class="small"></div></div></div></section>
+
+<section class="section"><div class="wrap"><h2>Join Digital Saathi</h2><p class="lead">Daily tricks, practice questions and clear explanations.</p>
+<div class="grid3"><article class="card"><h3>💬 WhatsApp Channel</h3><p>Get daily learning material.</p><a class="button primary" href="https://whatsapp.com/channel/0029VbCbZ6H0VycFIj1yR10A" target="_blank" rel="noopener">Follow Channel</a></article>
+<article class="card"><h3>👍 Facebook Page</h3><p>Follow and share the learning posts.</p><a class="button primary" href="https://www.facebook.com/share/1RYXBhTGEG/" target="_blank" rel="noopener">Visit Facebook</a></article>
+<article class="card"><h3>🌐 Website</h3><p>Explore Digital Saathi.</p><a class="button secondary" href="https://vksingla.in" target="_blank" rel="noopener">vksingla.in</a></article></div></div></section>
+</main>
+
+<footer class="footer"><div class="wrap"><strong>Digital Saathi</strong> · Seekho • Samjho • Aage Badho<br>Learning through simple images, practice and explained solutions.<small>Daily tricks load from Google Sheets. Personal progress stays on this device; shared scores use an optional nickname and private browser token.</small></div></footer>
+
+<nav class="bottomnav" aria-label="Quick navigation"><a href="#today" data-nav="today"><span>💡</span>Learn</a><a href="#practice" data-nav="practice"><span>✍️</span>Practice</a><a href="#progress" data-nav="progress"><span>🏅</span>Progress</a><a href="#challenge" data-nav="challenge"><span>🎯</span>Challenge</a></nav>
+
+<script>
+// STEP 1: Paste your deployed Google Apps Script Web App URL here after deployment.
+const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbyKDUCQnqVFWKxcZkftO8RTFxQAeB2PoiGWmAccjhl6yrNLj0qEphytAii4SoPS3CSa/exec';
+const STORAGE_KEY='digitalSaathiMathMagicProgress_v2';
+const NICKNAME_KEY='digitalSaathiMathMagicNickname_v3';
+const PARTICIPANT_TOKEN_KEY='digitalSaathiMathMagicPrivateToken_v1';
+function privateToken(){try{let t=localStorage.getItem(PARTICIPANT_TOKEN_KEY);if(!t){const bytes=new Uint8Array(24);crypto.getRandomValues(bytes);t=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');localStorage.setItem(PARTICIPANT_TOKEN_KEY,t)}return t}catch(e){return ''}}
+const participantToken=privateToken();
+let nickname=''; try{nickname=localStorage.getItem(NICKNAME_KEY)||''}catch(e){}
+const fallbackTrick={date:'2026-10-20',title:'Multiply by 999',intro:'A quick shortcut for multiplying a three-digit number by 999.',exampleQuestion:'342 × 999',exampleAnswer:'341658',steps:[{label:'Subtract 1',text:'342 − 1 = 341'},{label:'Find the final three digits',text:'1000 − 342 = 658 (equivalently: 9 − 3 = 6, 9 − 4 = 5, 10 − 2 = 8)'},{label:'Join the parts',text:'341 followed by 658 = 341658'}],hint:'For a three-digit number × 999, write the number minus 1, then append (1000 − the original number) as a three-digit block.',note:'Try the same steps with each practice question.',questions:[{question:'246 × 999 = ?',answer:'245754',explanation:'246 − 1 = 245; complements: 7, 5, 4 → 245754.'},{question:'531 × 999 = ?',answer:'530469',explanation:'531 − 1 = 530; complements: 4, 6, 9 → 530469.'},{question:'708 × 999 = ?',answer:'707292',explanation:'708 − 1 = 707; complements: 2, 9, 2 → 707292.'}],bonusQuestion:'864 × 999 = ?',bonusAnswer:'863136',bonusExplanation:'864 − 1 = 863; complements: 1, 3, 6 → 863136.'};
+let activeTrick=fallbackTrick;let progress={points:0,correct:0,answered:[],answeredByDate:{},completedTrickDates:[],completed:false,bonusCorrect:false,finisherAwarded:false,accuracyBadge:false};
+function localISODate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function safeText(el,text){el.textContent=text==null?'':String(text)}
+function normaliseTrick(row){const parse=(v,def)=>{if(Array.isArray(v))return v;if(typeof v==='string'){try{return JSON.parse(v)}catch(e){return def}}return def};return {...row,steps:parse(row.steps,row.stepsJSON?parse(row.stepsJSON,[]):[]),questions:parse(row.questions,row.practiceJSON?parse(row.practiceJSON,[]):[])} }
+function chooseTrick(rows,today){const published=rows.map(normaliseTrick).filter(r=>String(r.published??r.Published??'TRUE').toUpperCase()!=='FALSE'&&String(r.published??r.Published??'TRUE').toUpperCase()!=='NO');const exact=published.find(r=>String(r.date||r.Date||'').slice(0,10)===today);if(exact)return exact;const earlier=published.filter(r=>String(r.date||r.Date||'').slice(0,10)<=today).sort((a,b)=>String(b.date||b.Date).localeCompare(String(a.date||a.Date)));return earlier[0]||null}
+function value(row,...keys){for(const k of keys){if(row[k]!==undefined&&row[k]!==null&&row[k]!=='')return row[k]}return ''}
+function adaptRow(r){return {date:value(r,'date','Date'),title:value(r,'title','TrickTitle','trickTitle'),intro:value(r,'intro','TrickIntro','trickIntro'),exampleQuestion:value(r,'exampleQuestion','ExampleQuestion'),exampleAnswer:String(value(r,'exampleAnswer','ExampleAnswer')),steps: r.steps||r.StepsJSON||r.stepsJSON||[],hint:value(r,'hint','Hint'),note:value(r,'note','Note'),questions:r.questions||r.PracticeJSON||r.practiceJSON||[],bonusQuestion:value(r,'bonusQuestion','BonusQuestion'),bonusAnswer:String(value(r,'bonusAnswer','BonusAnswer')),imageURL: value(r, 'imageURL', 'ImageURL', 'imageUrl'),bonusExplanation:value(r,'bonusExplanation','BonusExplanation')}}
+async function loadDailyTrick(){const today=localISODate();document.getElementById('todayDate').textContent=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});if(SHEETS_API_URL.startsWith('https://script.google.com/')||SHEETS_API_URL.startsWith('https://script.googleusercontent.com/')){try{const response=await fetch(SHEETS_API_URL,{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);const data=await response.json();const rows=Array.isArray(data)?data:(data.tricks||data.data||[]);const selected=chooseTrick(rows,today);if(!selected)throw new Error('No published trick found for today or an earlier date.');console.log('Selected trick from API:', selected);activeTrick=adaptRow(selected);document.getElementById('dataStatus').textContent='✓ Daily trick loaded from Google Sheets.';document.getElementById('dataStatus').className='status ok'}catch(err){console.error('Google Sheets trick loading failed:', err);activeTrick=fallbackTrick;document.getElementById('dataStatus').textContent='Could not load Google Sheets data; showing the built-in demo trick. Check the Web App URL and deployment permissions.';document.getElementById('dataStatus').className='status warn'}}else{activeTrick=fallbackTrick;document.getElementById('dataStatus').textContent='Demo mode: add your Apps Script Web App URL to connect Google Sheets.';document.getElementById('dataStatus').className='status warn'}renderTrick()}
+function renderTrick(){const t=activeTrick;safeText(document.getElementById('trickTitle'),t.title||'Daily Math Trick');showTrickInfographic(t.imageURL);safeText(document.getElementById('trickIntro'),t.intro);safeText(document.getElementById('mainEquation'),`${t.exampleQuestion||''} = ${t.exampleAnswer||''}`);const steps=document.getElementById('steps');steps.replaceChildren();(t.steps||[]).forEach((s,i)=>{const div=document.createElement('div');div.className='step';const n=document.createElement('span');n.className='stepno';n.textContent=String(i+1);const p=document.createElement('p');const strong=document.createElement('strong');strong.textContent=(s.label||s.title||`Step ${i+1}`)+': ';p.append(strong,document.createTextNode(s.text||s.explanation||''));div.append(n,p);steps.append(div)});safeText(document.getElementById('trickHint'),t.hint||'Read each step carefully and practise with the questions below.');safeText(document.getElementById('trickNote'),t.note||'');renderQuestions();safeText(document.getElementById('bonusLabel'),t.bonusQuestion||'Bonus question');document.getElementById('bonus').value='';document.getElementById('bonusFeedback').textContent='';document.getElementById('sets').textContent=(progress.completed?'1':'0')+'/'+Math.max(1,(t.questions||[]).length?1:1)}
+function renderQuestions(){const host=document.getElementById('practiceQuestions');host.replaceChildren();const qs=activeTrick.questions||[];if(!qs.length){host.textContent='Practice questions will be added soon.';return}qs.forEach((q,i)=>{const wrap=document.createElement('div');wrap.className='question';const label=document.createElement('label');const id='q'+(i+1),fb='fb'+(i+1);label.htmlFor=id;label.textContent=(i+1)+'. '+q.question;const row=document.createElement('div');row.className='answerrow';const input=document.createElement('input');input.id=id;input.inputMode='numeric';input.autocomplete='off';input.placeholder='Your answer';const btn=document.createElement('button');btn.className='button primary';btn.textContent='Check';btn.addEventListener('click',()=>checkAnswer(id,String(q.answer??''),fb,q.explanation||''));const feedback=document.createElement('div');feedback.id=fb;feedback.className='feedback';feedback.setAttribute('aria-live','polite');row.append(input,btn);wrap.append(label,row,feedback);host.append(wrap)});const hint=document.createElement('div');hint.className='hint';const strong=document.createElement('strong');strong.textContent='Hint: ';hint.append(strong,document.createTextNode(activeTrick.hint||'Follow the steps shown above.'));host.append(hint)}
+function loadProgress(){try{const s=localStorage.getItem(STORAGE_KEY);if(s)progress={...progress,...JSON.parse(s)}}catch(e){}}
+function saveProgress(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(progress))}catch(e){}renderProgress()}
+async function checkAnswer(inputId,expected,feedbackId,explanationText){const input=document.getElementById(inputId),fb=document.getElementById(feedbackId),v=input.value.trim().replace(/,/g,'');if(!v){fb.textContent='Please enter an answer first.';fb.className='feedback wrong';return}const questionIndex=Math.max(0,Number(inputId.replace('q',''))-1);let serverResult=null;const nick=currentNickname();if(nick&&endpointReady()){try{serverResult=await postApi({action:'submitAnswer',nickname:nick,participantToken,trickDate:activeTrick.date,questionIndex,answer:v});}catch(e){fb.textContent='Score server unavailable. You can still practise locally; try again later to submit a score.';fb.className='feedback wrong';return}}const isCorrect=serverResult?!!serverResult.correct:(v===expected);if(isCorrect){fb.textContent='Correct! '+(serverResult?('Score saved: '+serverResult.pointsAwarded+' points. '):'Practise complete! Add an optional nickname to contribute to the shared Top 10. ')+explanationText;fb.className='feedback correct';const key=activeTrick.date+'-q'+questionIndex;if(!progress.answered.includes(key)){progress.answered.push(key);progress.correct++;progress.points+=10}progress.answeredByDate[activeTrick.date]=progress.answeredByDate[activeTrick.date]||[];if(!progress.answeredByDate[activeTrick.date].includes(questionIndex))progress.answeredByDate[activeTrick.date].push(questionIndex);const total=(activeTrick.questions||[]).length;const completed=total>0&&progress.answeredByDate[activeTrick.date].length>=total;if(completed&&!progress.completedTrickDates.includes(activeTrick.date)){progress.completedTrickDates.push(activeTrick.date);progress.points+=5}progress.completed=completed;if(completed)progress.accuracyBadge=true;saveProgress();}else{fb.textContent=(serverResult?(serverResult.message||'Not quite. Try again.'):'Not quite. Try again. ')+(explanationText||'Review the worked example above.');fb.className='feedback wrong'}if(nick&&endpointReady())refreshCertificateStatus()}
+function checkBonus(){const v=document.getElementById('bonus').value.trim().replace(/,/g,''),fb=document.getElementById('bonusFeedback');if(!v){fb.textContent='Enter your answer first.';return}if(v===String(activeTrick.bonusAnswer)){fb.textContent='Correct! '+(activeTrick.bonusExplanation||'Well done!');if(!progress.bonusCorrect){progress.bonusCorrect=true;progress.points+=15}}else fb.textContent='Try again: review the trick steps and calculate carefully.';saveProgress()}
+function renderProgress(){safeText(document.getElementById('points'),progress.points);safeText(document.getElementById('correct'),progress.correct);safeText(document.getElementById('sets'),(progress.completed?'1':'0')+'/1');document.getElementById('badgeFirst').classList.toggle('earned',progress.answered.length>0);document.getElementById('badgeAcc').classList.toggle('earned',progress.accuracyBadge);document.getElementById('badgeSet').classList.toggle('earned',progress.completed)}
+function resetProgress(){if(confirm('Reset progress saved on this device?')){progress={points:0,correct:0,answered:[],answeredByDate:{},completedTrickDates:[],completed:false,bonusCorrect:false,finisherAwarded:false,accuracyBadge:false};saveProgress();location.reload()}}
+function shareChallenge(){const text='Can you solve '+(activeTrick.bonusQuestion||'today’s bonus question')+'? Try Digital Saathi Math Magic Playground: '+location.href;if(navigator.share)navigator.share({title:'Digital Saathi Math Challenge',text}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>alert('Challenge text copied. Share it with a friend.')).catch(()=>alert(text));else alert(text)}
+
+function endpointReady(){return SHEETS_API_URL.startsWith('https://script.google.com/');}
+async function postApi(payload){if(!endpointReady())throw new Error('Endpoint not configured');const body=new URLSearchParams({payload:JSON.stringify(payload)});const r=await fetch(SHEETS_API_URL,{method:'POST',body});if(!r.ok)throw new Error('Request failed');const data=await r.json();if(data.error)throw new Error(data.error);return data}
+function currentNickname(){const field=document.getElementById('publicNickname');const v=field?field.value.trim():nickname;if(!v)return '';if(!/^[\p{L}\p{N} _.-]{3,24}$/u.test(v))return '';return v}
+async function saveNicknameAndRefresh(){const raw=document.getElementById('publicNickname').value.trim();if(!raw){nickname='';localStorage.removeItem(NICKNAME_KEY);setCertStatus('Nickname cleared. Your learning remains local; no shared leaderboard score will be submitted.',false);return}if(!/^[\p{L}\p{N} _.-]{3,24}$/u.test(raw)){setCertStatus('Use 3–24 letters, numbers, spaces, dots, dashes or underscores. Avoid your real name or contact details.',true);return}nickname=raw;try{localStorage.setItem(NICKNAME_KEY,nickname)}catch(e){}if(!endpointReady()){setCertStatus('Nickname saved on this device. Connect the Apps Script URL to publish scores.',false);return}setCertStatus('Nickname selected. Scores submitted from this browser use a private token, so the same nickname on another browser has separate scores.',false);await loadLeaderboard();await refreshCertificateStatus()}
+function setCertStatus(message, isError = false) {
+  const el = document.getElementById('certificateStatus');
+  if (!el) return;
+  el.textContent = message;
+  el.className = 'feedback' + (isError ? ' wrong' : '');
+}
+function localEligibility(){return new Set(progress.completedTrickDates||[]).size>=5}
+async function refreshCertificateStatus(){const nick=currentNickname();if(nick&&endpointReady()){try{const r=await fetch(SHEETS_API_URL+'?action=status&participantToken='+encodeURIComponent(participantToken)+'&nickname='+encodeURIComponent(nick),{cache:'no-store'}),d=await r.json();if(!d.error){setCertStatus('For nickname '+nick+': '+d.completedTricks+' completed daily tricks. Certificate eligibility: '+(d.eligible?'eligible':'not yet eligible')+'.');return}}catch(e){}}setCertStatus('This device shows '+new Set(progress.completedTrickDates||[]).size+' completed daily tricks. '+(localEligibility()?'You can request a participation certificate.':'Complete practice on '+(5-new Set(progress.completedTrickDates||[]).size)+' more distinct daily trick(s).')+(nick?' Shared score checking is unavailable until the endpoint is connected.':' Without a nickname, this progress stays on this device.'),!localEligibility())}
+async function requestCertificate(){const name=(prompt('Name to print on the certificate (leave blank for Math Magic Learner):')||'').trim();const nick=currentNickname();const localDates=[...new Set(progress.completedTrickDates||[])];if(!nick&&!localEligibility()){setCertStatus('Not eligible on this device yet. Complete all practice questions on five different daily tricks.',true);return}if(nick&&endpointReady()){setCertStatus('Checking eligibility and preparing your certificate…');try{const d=await postApi({action:'issueCertificate',nickname:nick,participantToken,certificateName:name,localCompletedDates:localDates});if(d.error){setCertStatus(d.error,true);return}downloadPdf(d);return}catch(e){setCertStatus('Could not contact the certificate service. Please try again later.',true);return}}if(!localEligibility()){setCertStatus('The server cannot confirm eligibility yet. Complete five different daily tricks on this device, or connect the server.',true);return}downloadLocalCertificate(name,localDates)}
+function downloadPdf(d){const raw=atob(d.pdfBase64),bytes=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);const blob=new Blob([bytes],{type:'application/pdf'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=(d.certificateId||'DigitalSaathi-Certificate')+'.pdf';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);document.getElementById('certificateResult').textContent='Certificate issued: '+d.certificateId+'. Certificate name is not stored in the score sheet.';setCertStatus('Certificate PDF generated and downloaded.')}
+function downloadLocalCertificate(name,dates){const safe=(name||'Math Magic Learner').replace(/[<>]/g,'').slice(0,60);const id='DSMM-LOCAL-'+Math.random().toString(36).slice(2,10).toUpperCase();const w=window.open('','_blank');if(!w){setCertStatus('Allow pop-ups to print the certificate.',true);return}w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Digital Saathi Certificate</title><style>@page{size:A4 landscape;margin:12mm}body{font-family:Arial,sans-serif;text-align:center;color:#123b83}.outer{border:8px double #d7ad32;padding:28px;height:165mm;box-sizing:border-box}.title{font-size:38px;margin:20px}.name{font-size:32px;color:#16834a;font-weight:bold;margin:24px}.meta{font-size:11px;color:#52627b;margin-top:25px}</style></head><body><div class="outer"><b>DIGITAL SAATHI</b><p>Seekho • Samjho • Aage Badho</p><div class="title">Certificate of Participation</div><p>This certificate is proudly presented to</p><div class="name">'+escapeHtmlClient(safe)+'</div><p>for practising at least five different daily tricks in the<br><b>Math Magic Playground</b>.</p><p>Keep learning. Keep exploring. Keep growing!</p><div class="meta">Certificate ID: '+id+'<br>Issued: '+new Date().toLocaleDateString('en-IN')+'<br>Local motivational certificate — not server verified.</div></div><script>window.onload=()=>window.print()<\/script></body></html>');w.document.close();document.getElementById('certificateResult').textContent='Local certificate opened for printing or Save as PDF. This ID is not stored or verifiable online.';setCertStatus('Local certificate ready. Use Print → Save as PDF.')}
+function escapeHtmlClient(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+async function loadLeaderboard(){const host=document.getElementById('leaderboardWrap');if(!endpointReady()){host.innerHTML='<h3 style="margin-top:20px">Top 10 — entire series</h3><p>Connect the Apps Script Web App to load shared nickname scores.</p>';return}try{const r=await fetch(SHEETS_API_URL+'?action=leaderboard',{cache:'no-store'}),d=await r.json();host.replaceChildren();const h=document.createElement('h3');h.textContent='Top 10 — entire series';host.append(h);if(!d.leaderboard||!d.leaderboard.length){host.append(document.createTextNode('No scores yet.'));return}const table=document.createElement('table');table.className='leaderboard';const thead=document.createElement('thead'),tr=document.createElement('tr');['Rank','Nickname','Points','Accuracy'].forEach(x=>{const th=document.createElement('th');th.textContent=x;tr.append(th)});thead.append(tr);table.append(thead);const tbody=document.createElement('tbody');d.leaderboard.forEach(x=>{const row=document.createElement('tr');[x.rank,x.nickname,x.points,x.accuracy+'%'].forEach(v=>{const td=document.createElement('td');td.textContent=String(v);row.append(td)});tbody.append(row)});table.append(tbody);host.append(table)}catch(e){host.textContent='Leaderboard is temporarily unavailable.'}}
+function escapeHtmlClient(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+document.addEventListener('DOMContentLoaded',()=>{if(nickname)document.getElementById('publicNickname').value=nickname;loadLeaderboard();refreshCertificateStatus()});
+
+loadProgress();renderProgress();loadDailyTrick();
+</script>
+<script>
+function showTrickInfographic(imageUrl) {
+  const container = document.getElementById('trick-infographic');
+
+  if (!container) {
+    console.error('Infographic container not found');
+    return;
+  }
+
+  container.replaceChildren();
+
+  console.log('Infographic URL:', imageUrl);
+
+  if (!imageUrl) {
+    container.textContent = 'No infographic URL received.';
+    return;
+  }
+
+  const img = document.createElement('img');
+  img.src = imageUrl;
+  img.alt = 'Math Magic trick infographic';
+  img.style.maxWidth = '100%';
+  img.style.height = 'auto';
+
+  img.onload = () => console.log('Infographic loaded successfully');
+  img.onerror = () => console.error('Infographic image failed to load');
+
+  container.appendChild(img);
+}
+</script>
+<script>
+/* UI enhancements (no change to quiz logic) */
+(function(){
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Enter'||e.target.tagName!=='INPUT')return;
+    var row=e.target.closest('.answerrow,.bonus-row');var b=row&&row.querySelector('button');
+    if(b){e.preventDefault();b.click()}
+  });
+  var pts=document.getElementById('points'),chip=document.getElementById('ptsChip');
+  if(pts&&chip){var sync=function(){chip.textContent=pts.textContent};sync();new MutationObserver(sync).observe(pts,{childList:true,characterData:true,subtree:true})}
+  var links=document.querySelectorAll('[data-nav]');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){links.forEach(function(a){a.classList.toggle('active',a.dataset.nav===en.target.id)})}})},{rootMargin:'-35% 0px -55% 0px'});
+    ['today','practice','progress','challenge'].forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el)});
+  }
+})();
+</script>
+</body></html>
