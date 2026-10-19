@@ -260,7 +260,106 @@ function renderTrick(){const t=activeTrick;safeText(document.getElementById('tri
 function renderQuestions(){const host=document.getElementById('practiceQuestions');host.replaceChildren();const qs=activeTrick.questions||[];if(!qs.length){host.textContent='Practice questions will be added soon.';return}qs.forEach((q,i)=>{const wrap=document.createElement('div');wrap.className='question';const label=document.createElement('label');const id='q'+(i+1),fb='fb'+(i+1);label.htmlFor=id;label.textContent=(i+1)+'. '+q.question;const row=document.createElement('div');row.className='answerrow';const input=document.createElement('input');input.id=id;input.inputMode='numeric';input.autocomplete='off';input.placeholder='Your answer';const btn=document.createElement('button');btn.className='button primary';btn.textContent='Check';btn.addEventListener('click',()=>checkAnswer(id,String(q.answer??''),fb,q.explanation||''));const feedback=document.createElement('div');feedback.id=fb;feedback.className='feedback';feedback.setAttribute('aria-live','polite');row.append(input,btn);wrap.append(label,row,feedback);host.append(wrap)});const hint=document.createElement('div');hint.className='hint';const strong=document.createElement('strong');strong.textContent='Hint: ';hint.append(strong,document.createTextNode(activeTrick.hint||'Follow the steps shown above.'));host.append(hint)}
 function loadProgress(){try{const s=localStorage.getItem(STORAGE_KEY);if(s)progress={...progress,...JSON.parse(s)}}catch(e){}}
 function saveProgress(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(progress))}catch(e){}renderProgress()}
-async function checkAnswer(inputId,expected,feedbackId,explanationText){const input=document.getElementById(inputId),fb=document.getElementById(feedbackId),v=input.value.trim().replace(/,/g,'');if(!v){fb.textContent='Please enter an answer first.';fb.className='feedback wrong';return}const questionIndex=Math.max(0,Number(inputId.replace('q',''))-1);let serverResult=null;const nick=currentNickname();if(nick&&endpointReady()){try{serverResult=await postApi({action:'submitAnswer',nickname:nick,participantToken,trickDate:activeTrick.date,questionIndex,answer:v});}catch(e){fb.textContent='Score server unavailable. You can still practise locally; try again later to submit a score.';fb.className='feedback wrong';return}}const isCorrect=serverResult?!!serverResult.correct:(v===expected);if(isCorrect){fb.textContent='Correct! '+(serverResult?('Score saved: '+serverResult.pointsAwarded+' points. '):'Practise complete! Add an optional nickname to contribute to the shared Top 10. ')+explanationText;fb.className='feedback correct';const key=activeTrick.date+'-q'+questionIndex;if(!progress.answered.includes(key)){progress.answered.push(key);progress.correct++;progress.points+=10}progress.answeredByDate[activeTrick.date]=progress.answeredByDate[activeTrick.date]||[];if(!progress.answeredByDate[activeTrick.date].includes(questionIndex))progress.answeredByDate[activeTrick.date].push(questionIndex);const total=(activeTrick.questions||[]).length;const completed=total>0&&progress.answeredByDate[activeTrick.date].length>=total;if(completed&&!progress.completedTrickDates.includes(activeTrick.date)){progress.completedTrickDates.push(activeTrick.date);progress.points+=5}progress.completed=completed;if(completed)progress.accuracyBadge=true;saveProgress();}else{fb.textContent=(serverResult?(serverResult.message||'Not quite. Try again.'):'Not quite. Try again. ')+(explanationText||'Review the worked example above.');fb.className='feedback wrong'}if(nick&&endpointReady())refreshCertificateStatus()}
+async function checkAnswer(inputId, expected, feedbackId, explanationText) {
+  const input = document.getElementById(inputId);
+  const fb = document.getElementById(feedbackId);
+  const v = input.value.trim().replace(/,/g, '');
+
+  if (!v) {
+    fb.textContent = 'Please enter an answer first.';
+    fb.className = 'feedback wrong';
+    return;
+  }
+
+  const questionIndex = Math.max(0, Number(inputId.replace('q', '')) - 1);
+  let serverResult = null;
+  const nick = currentNickname();
+
+  if (nick && endpointReady()) {
+    try {
+      serverResult = await postApi({
+        action: 'submitAnswer',
+        nickname: nick,
+        participantToken,
+        trickDate: activeTrick.date,
+        questionIndex,
+        answer: v
+      });
+    } catch (e) {
+      fb.textContent = 'Score server unavailable. Please try again later to submit a score.';
+      fb.className = 'feedback wrong';
+      return;
+    }
+  }
+
+  const isCorrect = serverResult
+    ? !!serverResult.correct
+    : (v === expected);
+
+  if (isCorrect) {
+    const key = activeTrick.date + '-q' + questionIndex;
+
+    if (!progress.answered.includes(key)) {
+      progress.answered.push(key);
+      progress.correct++;
+      progress.points += 10;
+    }
+
+    progress.answeredByDate[activeTrick.date] =
+      progress.answeredByDate[activeTrick.date] || [];
+
+    if (!progress.answeredByDate[activeTrick.date].includes(questionIndex)) {
+      progress.answeredByDate[activeTrick.date].push(questionIndex);
+    }
+
+    const total = (activeTrick.questions || []).length;
+    const completed = total > 0 &&
+      progress.answeredByDate[activeTrick.date].length >= total;
+
+    if (completed &&
+        !progress.completedTrickDates.includes(activeTrick.date)) {
+      progress.completedTrickDates.push(activeTrick.date);
+      progress.points += 5;
+    }
+
+    progress.completed = completed;
+
+    if (completed) {
+      progress.accuracyBadge = true;
+    }
+
+    const message = serverResult
+      ? 'Score saved: ' + serverResult.pointsAwarded + ' points. '
+      : '';
+
+    const completionMessage = completed
+      ? ' 🎉 All ' + total + ' practice questions completed!'
+      : '';
+
+    const localMessage = !serverResult
+      ? 'Practise your trick and add an optional nickname to join the shared Top 10. '
+      : '';
+
+    fb.textContent = 'Correct! ' + message + localMessage +
+      (explanationText || '') + completionMessage;
+
+    fb.className = 'feedback correct';
+    saveProgress();
+
+  } else {
+    fb.textContent =
+      (serverResult
+        ? (serverResult.message || 'Not quite. Try again.')
+        : 'Not quite. Try again. ') +
+      (explanationText || 'Review the worked example above.');
+
+    fb.className = 'feedback wrong';
+  }
+
+  if (nick && endpointReady()) {
+    refreshCertificateStatus();
+  }
+}
 function checkBonus(){const v=document.getElementById('bonus').value.trim().replace(/,/g,''),fb=document.getElementById('bonusFeedback');if(!v){fb.textContent='Enter your answer first.';return}if(v===String(activeTrick.bonusAnswer)){fb.textContent='Correct! '+(activeTrick.bonusExplanation||'Well done!');if(!progress.bonusCorrect){progress.bonusCorrect=true;progress.points+=15}}else fb.textContent='Try again: review the trick steps and calculate carefully.';saveProgress()}
 function renderProgress(){safeText(document.getElementById('points'),progress.points);safeText(document.getElementById('correct'),progress.correct);safeText(document.getElementById('sets'),(progress.completed?'1':'0')+'/1');document.getElementById('badgeFirst').classList.toggle('earned',progress.answered.length>0);document.getElementById('badgeAcc').classList.toggle('earned',progress.accuracyBadge);document.getElementById('badgeSet').classList.toggle('earned',progress.completed)}
 function resetProgress(){if(confirm('Reset progress saved on this device?')){progress={points:0,correct:0,answered:[],answeredByDate:{},completedTrickDates:[],completed:false,bonusCorrect:false,finisherAwarded:false,accuracyBadge:false};saveProgress();location.reload()}}
