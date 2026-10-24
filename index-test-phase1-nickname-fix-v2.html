@@ -392,7 +392,27 @@ function escapeHtmlClient(s){return String(s||'').replace(/&/g,'&amp;').replace(
 function updateNicknameHeader(){const b=document.getElementById('headerNickname');if(!b)return;b.textContent=nickname?'👤 '+nickname+' ✎':'👤 Set Nickname';b.title=nickname?'Change nickname':'Set nickname';}
 function openNicknameDialog(){const overlay=document.getElementById('nicknameOverlay');if(!overlay)return;const input=document.getElementById('nicknameDialogInput');const err=document.getElementById('nicknameDialogError');if(err)err.textContent='';if(input)input.value=nickname||'';overlay.classList.add('open');setTimeout(()=>input&&input.focus(),30)}
 function closeNicknameDialog(){const overlay=document.getElementById('nicknameOverlay');if(overlay)overlay.classList.remove('open')}
-function continueAsGuest(){closeNicknameDialog();try{localStorage.setItem('digitalSaathiMathMagicGuestChosen_v1','yes')}catch(e){}updateNicknameHeader()}
+function continueAsGuest() {
+  // Clear the active nickname
+  nickname = '';
+
+  // Clear the nickname field
+  const field = document.getElementById('publicNickname');
+  if (field) field.value = '';
+
+  // Save Guest preference and remove saved nickname
+  try {
+    localStorage.removeItem(NICKNAME_KEY);
+    localStorage.setItem(
+      'digitalSaathiMathMagicGuestChosen_v1',
+      'yes'
+    );
+  } catch (e) {}
+
+  // Close dialog and update header
+  closeNicknameDialog();
+  updateNicknameHeader();
+}
 async function saveNicknameFromDialog(){const input=document.getElementById('nicknameDialogInput');const raw=input?input.value.trim():'';const err=document.getElementById('nicknameDialogError');if(!/^[\p{L}\p{N} _.-]{3,24}$/u.test(raw)){if(err)err.textContent='Please enter 3–24 letters, numbers, spaces, dots, dashes or underscores.';return}const field=document.getElementById('publicNickname');if(field)field.value=raw;await saveNicknameAndRefresh();if(nickname===raw){try{localStorage.removeItem('digitalSaathiMathMagicGuestChosen_v1')}catch(e){}updateNicknameHeader();closeNicknameDialog()}}
 document.addEventListener('DOMContentLoaded',()=>{const headerBtn=document.getElementById('headerNickname');if(headerBtn)headerBtn.addEventListener('click',openNicknameDialog);const field=document.getElementById('publicNickname');if(nickname&&field)field.value=nickname;updateNicknameHeader();let guestChosen=false;try{guestChosen=localStorage.getItem('digitalSaathiMathMagicGuestChosen_v1')==='yes'}catch(e){}if(!nickname&&!guestChosen)openNicknameDialog();const overlay=document.getElementById('nicknameOverlay');if(overlay)overlay.addEventListener('click',e=>{if(e.target===overlay)continueAsGuest()});const input=document.getElementById('nicknameDialogInput');if(input)input.addEventListener('keydown',e=>{if(e.key==='Enter')saveNicknameFromDialog();if(e.key==='Escape')continueAsGuest()})});
 
