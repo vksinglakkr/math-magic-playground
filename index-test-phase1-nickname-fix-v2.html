@@ -413,7 +413,31 @@ function continueAsGuest() {
   closeNicknameDialog();
   updateNicknameHeader();
 }
-async function saveNicknameFromDialog(){const input=document.getElementById('nicknameDialogInput');const raw=input?input.value.trim():'';const err=document.getElementById('nicknameDialogError');if(!/^[\p{L}\p{N} _.-]{3,24}$/u.test(raw)){if(err)err.textContent='Please enter 3–24 letters, numbers, spaces, dots, dashes or underscores.';return}const field=document.getElementById('publicNickname');if(field)field.value=raw;await saveNicknameAndRefresh();if(nickname===raw){try{localStorage.removeItem('digitalSaathiMathMagicGuestChosen_v1')}catch(e){}updateNicknameHeader();closeNicknameDialog()}}
+async function saveNicknameFromDialog() {
+  const input = document.getElementById('nicknameDialogInput');
+  const raw = input ? input.value.trim() : '';
+  const err = document.getElementById('nicknameDialogError');
+
+  if (!/^[\p{L}\p{N} _.-]{3,24}$/u.test(raw)) {
+    if (err) err.textContent = 'Please enter 3–24 letters, numbers, spaces, dots, dashes or underscores.';
+    return;
+  }
+
+  const field = document.getElementById('publicNickname');
+  if (field) field.value = raw;
+
+  await saveNicknameAndRefresh();
+
+  if (nickname === raw) {
+    try {
+      localStorage.removeItem('digitalSaathiMathMagicGuestChosen_v1');
+    } catch (e) {}
+
+    updateNicknameHeader();
+    closeNicknameDialog();
+    location.reload();
+  }
+}
 document.addEventListener('DOMContentLoaded',()=>{const headerBtn=document.getElementById('headerNickname');if(headerBtn)headerBtn.addEventListener('click',openNicknameDialog);const field=document.getElementById('publicNickname');if(nickname&&field)field.value=nickname;updateNicknameHeader();let guestChosen=false;try{guestChosen=localStorage.getItem('digitalSaathiMathMagicGuestChosen_v1')==='yes'}catch(e){}if(!nickname&&!guestChosen)openNicknameDialog();const overlay=document.getElementById('nicknameOverlay');if(overlay)overlay.addEventListener('click',e=>{if(e.target===overlay)continueAsGuest()});const input=document.getElementById('nicknameDialogInput');if(input)input.addEventListener('keydown',e=>{if(e.key==='Enter')saveNicknameFromDialog();if(e.key==='Escape')continueAsGuest()})});
 
 loadProgress();renderProgress();
