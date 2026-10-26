@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Math Magic Playground — Infographic Guide (TEST)</title>
+<style>
+:root{--blue:#124b93;--ink:#17345d;--bg:#f4faff;--line:#c8def8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:"Noto Sans Devanagari UI","Noto Sans Devanagari",Mangal,Arial,sans-serif;color:var(--ink)}
+header{background:linear-gradient(135deg,#124b93,#1c74c9);color:#fff;padding:20px 16px;text-align:center}
+header h1{margin:0 0 8px;font-size:clamp(1.4rem,4vw,2.2rem)} header p{margin:0}
+main{max-width:1050px;margin:18px auto;padding:0 14px 35px}
+img.overview{display:block;width:100%;height:auto;border-radius:18px;box-shadow:0 5px 20px #17345d18;margin-bottom:18px}
+h2{font-size:1.25rem;margin:18px 0 10px}
+.group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);padding:14px 12px;text-align:left;box-shadow:0 2px 7px #17345d0d}
+button:hover,button:focus{outline:3px solid #b6d9ff;background:#f9fcff}
+button strong{display:block;font-size:1rem;margin-bottom:5px} button span{font-size:.88rem;color:#4b607a}
+#detail{margin-top:18px} #detail[hidden]{display:none}
+.detail-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0}
+.back{background:#124b93;color:white;text-align:center;border:0}
+img.detail-img{display:block;width:100%;height:auto;border-radius:16px;box-shadow:0 5px 20px #17345d18}
+footer{text-align:center;padding:20px 12px;color:#60718a;font-size:.9rem}
+@media(max-width:560px){.group{grid-template-columns:1fr}main{padding:0 10px 30px}button{padding:13px}}
+</style></head>
+<body>
+<header><h1>Math Magic Playground</h1><p>7 सुविधाएँ • सरल परिचय • अलग-अलग detail guides</p></header>
+<main>
+<section id="home">
+<img class="overview" src="00-overview.png" alt="सात सुविधाओं का सरल परिचय">
+<h2>पहले 7 सुविधाओं को समझें</h2>
+<div class="group">
+<button data-img="feature-01-today.png"><strong>1. Today</strong><span>आज की नई ट्रिक कहाँ मिलेगी?</span></button>
+<button data-img="feature-02-practice.png"><strong>2. Practice</strong><span>सीखी हुई ट्रिक का अभ्यास</span></button>
+<button data-img="feature-03-challenge.png"><strong>3. Challenge</strong><span>अपनी गति और कौशल आज़माएँ</span></button>
+<button data-img="feature-04-library.png"><strong>4. Library</strong><span>पुरानी ट्रिक्स फिर से सीखें</span></button>
+<button data-img="feature-05-custom.png"><strong>5. Custom</strong><span>अपनी पसंद के विषय पर अभ्यास</span></button>
+<button data-img="feature-06-me.png"><strong>6. Me</strong><span>अपनी प्रगति देखें</span></button>
+<button data-img="feature-07-about.png"><strong>7. About</strong><span>इस पहल के बारे में जानें</span></button>
+</div>
+<h2>अतिरिक्त जानकारी और स्कोरिंग</h2>
+<div class="group">
+<button data-img="01-scoring-guide.png"><strong>Scoring Guide</strong><span>अंक मिलने का संक्षिप्त तरीका</span></button>
+<button data-img="02-practice-score.png"><strong>Practice के अंक</strong><span>सही उत्तर, बोनस और late practice</span></button>
+<button data-img="03-weekly-test.png"><strong>Weekly Test के अंक</strong><span>टेस्ट का तरीका और स्कोर</span></button>
+<button data-img="04-challenge-score.png"><strong>Challenge के अंक</strong><span>Challenge scoring की जानकारी</span></button>
+</div>
+</section>
+<section id="detail" hidden><div class="detail-head"><h2 id="detailTitle">विस्तृत जानकारी</h2><button class="back" id="backBtn">← मुख्य पेज पर लौटें</button></div><img id="detailImage" class="detail-img" alt="विस्तृत infographic"></section>
+</main>
+<footer>Digital Saathi • vksingla.in<br>यह TEST guide है। Scoring rules को ऐप में सत्यापित करके अंतिम रूप दें।</footer>
+<script>
+const home=document.getElementById('home'),detail=document.getElementById('detail'),img=document.getElementById('detailImage'),title=document.getElementById('detailTitle');
+document.querySelectorAll('[data-img]').forEach(btn=>btn.addEventListener('click',()=>{
+ const file=btn.dataset.img; img.src=file; title.textContent=btn.querySelector('strong').textContent;
+ home.hidden=true;detail.hidden=false;window.scrollTo({top:0,behavior:'smooth'});
+}));
+function goHome(){detail.hidden=true;home.hidden=false;img.removeAttribute('src');window.scrollTo({top:0,behavior:'smooth'});}
+document.getElementById('backBtn').addEventListener('click',goHome);
+window.addEventListener('keydown',e=>{if(e.key==='Escape'&&!detail.hidden)goHome()});
+</script></body></html>
