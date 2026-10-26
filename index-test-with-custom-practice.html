@@ -43,6 +43,7 @@ h1,h2,h3{font-family:var(--head);line-height:1.2;margin:0}
 #trickTitle{font-size:1.55rem;margin:10px 0 2px;color:var(--navy)}
 .small{font-size:.86rem;color:var(--muted);margin:0}
 #trick-infographic{margin:12px 0 4px}.tgrid>div:first-child{position:relative}
+.video-card{margin:14px 0 6px;padding:12px;background:#f7f9ff;border:1px solid var(--line);border-radius:14px}.video-card h3{font-size:1rem;color:var(--navy);margin:0 0 9px}.video-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:10px;background:#101828}.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}.video-caption{font-size:.78rem;color:var(--muted);margin:8px 0 0}
 #trick-infographic img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);cursor:zoom-in}
 .zoomtip{position:absolute;top:8px;right:8px;z-index:2;background:rgba(15,46,107,.85);color:#fff;font-size:.72rem;font-weight:600;padding:4px 10px;border-radius:999px;pointer-events:none}
 #trick-infographic:empty+.zoomtip,#trick-infographic:not(:has(img))+.zoomtip,#trick-infographic.imgload+.zoomtip{display:none}
@@ -110,9 +111,10 @@ details.acc[open]>summary::after{content:"－"}
 
 /* bottom nav */
 .bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:60;background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(15,46,107,.1);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
-.bn{width:100%;max-width:760px;margin:auto;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px}
+.bn{width:100%;max-width:760px;margin:auto;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
 .bn button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:5px 1px;min-width:0;white-space:nowrap;border:0;background:none;font:600 clamp(.58rem,2.2vw,.7rem) 'Inter',sans-serif;color:var(--muted);border-radius:12px;min-height:50px;cursor:pointer}
 .bn button span{font-size:1.3rem;line-height:1.2}
+.bn .custom-nav{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:5px 1px;min-width:0;white-space:nowrap;text-decoration:none;font:600 clamp(.58rem,2.2vw,.7rem) 'Inter',sans-serif;color:var(--muted);border-radius:12px;min-height:50px}.bn .custom-nav span{font-size:1.3rem;line-height:1.2}
 .bn button.active{color:var(--blue);background:#eaf1ff}
 
 /* info strip, brand footer, about */
@@ -182,7 +184,7 @@ details.acc[open]>summary::after{content:"－"}
 <div class="row"><span class="pill">✨ TODAY'S TRICK</span><span class="date" id="todayDate">Loading date…</span></div>
 <h1 id="trickTitle">Loading today's trick…</h1><p id="trickIntro" class="small"></p>
 <div class="tgrid">
-<div><div id="trick-infographic" class="imgload"></div><span class="zoomtip">🔍 Tap to zoom</span><div class="image-actions"><button class="button secondary" type="button" onclick="downloadTodayInfographic()">⬇️ Download infographic</button><button class="button secondary" type="button" onclick="printTodayTrick()">🖨️ Print today’s trick</button></div></div>
+<div><div id="trick-video"></div><div id="infographic-actions" style="margin-top:12px"><button id="showInfographicBtn" class="button secondary block" type="button" onclick="openTodayInfographic()">🖼️ View Infographic / इन्फोग्राफिक देखें</button></div><div id="trick-infographic" hidden></div><span class="zoomtip" hidden>🔍 Tap to zoom</span><div class="image-actions" id="infographicImageActions" hidden><button class="button secondary" type="button" onclick="downloadTodayInfographic()">⬇️ Download infographic</button><button class="button secondary" type="button" onclick="printTodayTrick()">🖨️ Print today’s trick</button></div></div>
 <div><div class="equation" id="mainEquation"></div><div id="steps"></div>
 <div class="hint"><strong>💡 Remember:</strong> <span id="trickHint"></span></div><p class="small" id="trickNote" style="margin-top:10px"></p></div>
 </div></article>
@@ -263,7 +265,7 @@ details.acc[open]>summary::after{content:"－"}
 </main>
 
 <nav class="bottomnav" aria-label="Main navigation"><div class="bn">
-<button class="active" data-go="today"><span>💡</span>Today</button><button data-go="library"><span>📚</span>Library</button><button data-go="practice"><span>✍️</span>Practice</button><button data-go="challenge"><span>🎯</span>Challenge</button><button data-go="me"><span>🏅</span>Me</button><a href="./custom-practice.html" aria-label="Custom Practice" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex:1;min-width:0;padding:7px 2px;color:inherit;text-decoration:none;font:inherit;font-size:.68rem"><span style="font-size:1.1rem">🧩</span>Custom</a><button data-go="about"><span>ℹ️</span>About</button>
+<button class="active" data-go="today"><span>💡</span>Today</button><button data-go="library"><span>📚</span>Library</button><button data-go="practice"><span>✍️</span>Practice</button><button data-go="challenge"><span>🎯</span>Challenge</button><button data-go="me"><span>🏅</span>Me</button><a class="custom-nav" href="./custom-practice.html" aria-label="Custom Practice"><span>🧩</span>Custom</a><button data-go="about"><span>ℹ️</span>About</button>
 </div></nav>
 
 <div class="lb" id="lb" role="dialog" aria-label="Infographic zoom"><img id="lbImg" alt="Math Magic trick infographic"></div><button class="lbx" id="lbx" aria-label="Close">✕</button>
@@ -285,7 +287,7 @@ function safeFormatted(el,text){const esc=String(text==null?'':text).replace(/&/
 function normaliseTrick(row){const parse=(v,def)=>{if(Array.isArray(v))return v;if(typeof v==='string'){try{return JSON.parse(v)}catch(e){return def}}return def};return {...row,steps:parse(row.steps,row.stepsJSON?parse(row.stepsJSON,[]):[]),questions:parse(row.questions,row.practiceJSON?parse(row.practiceJSON,[]):[])} }
 function chooseTrick(rows,today){const published=rows.map(normaliseTrick).filter(r=>String(r.published??r.Published??'TRUE').toUpperCase()!=='FALSE'&&String(r.published??r.Published??'TRUE').toUpperCase()!=='NO');const exact=published.find(r=>String(r.date||r.Date||'').slice(0,10)===today);if(exact)return exact;const earlier=published.filter(r=>String(r.date||r.Date||'').slice(0,10)<=today).sort((a,b)=>String(b.date||b.Date).localeCompare(String(a.date||a.Date)));return earlier[0]||null}
 function value(row,...keys){for(const k of keys){if(row[k]!==undefined&&row[k]!==null&&row[k]!=='')return row[k]}return ''}
-function adaptRow(r){return {date:value(r,'date','Date'),title:value(r,'title','TrickTitle','trickTitle'),intro:value(r,'intro','TrickIntro','trickIntro'),exampleQuestion:value(r,'exampleQuestion','ExampleQuestion'),exampleAnswer:String(value(r,'exampleAnswer','ExampleAnswer')),steps: r.steps||r.StepsJSON||r.stepsJSON||[],hint:value(r,'hint','Hint'),note:value(r,'note','Note'),questions:r.questions||r.PracticeJSON||r.practiceJSON||[],bonusQuestion:value(r,'bonusQuestion','BonusQuestion'),bonusAnswer:String(value(r,'bonusAnswer','BonusAnswer')),imageURL: value(r, 'imageURL', 'ImageURL', 'imageUrl'),bonusExplanation:value(r,'bonusExplanation','BonusExplanation')}}
+function adaptRow(r){return {date:value(r,'date','Date'),title:value(r,'title','TrickTitle','trickTitle'),intro:value(r,'intro','TrickIntro','trickIntro'),exampleQuestion:value(r,'exampleQuestion','ExampleQuestion'),exampleAnswer:String(value(r,'exampleAnswer','ExampleAnswer')),steps: r.steps||r.StepsJSON||r.stepsJSON||[],hint:value(r,'hint','Hint'),note:value(r,'note','Note'),questions:r.questions||r.PracticeJSON||r.practiceJSON||[],bonusQuestion:value(r,'bonusQuestion','BonusQuestion'),bonusAnswer:String(value(r,'bonusAnswer','BonusAnswer')),imageURL: value(r, 'imageURL', 'ImageURL', 'imageUrl'),videoURL: value(r, 'videoURL', 'VideoURL', 'videoUrl'),bonusExplanation:value(r,'bonusExplanation','BonusExplanation')}}
 const TRICK_CACHE_KEY='digitalSaathiMathMagicTrickCache_v1';
 let trickLoadState='idle',shownSig='';
 const BI=(en,hi)=>en+' / '+hi;
@@ -349,8 +351,25 @@ async function loadDailyTrick(){
 }
 window.addEventListener('online',()=>{if(trickLoadState==='done'&&(!shownSig||shownSig==='fallback'))loadDailyTrick()});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&trickLoadState==='done'&&(!shownSig||shownSig==='fallback'))loadDailyTrick()});
+function youtubeEmbedUrl(raw){
+  const value=String(raw||'').trim();if(!value)return '';
+  try{const u=new URL(value);const host=u.hostname.toLowerCase().replace(/^www\./,'').replace(/^m\./,'');let id='';
+    if(host==='youtu.be')id=u.pathname.split('/').filter(Boolean)[0]||'';
+    else if(['youtube.com','youtube-nocookie.com'].includes(host)){if(u.pathname==='/watch')id=u.searchParams.get('v')||'';else{const parts=u.pathname.split('/').filter(Boolean);if(['embed','shorts','live'].includes(parts[0]))id=parts[1]||''}}
+    if(!/^[A-Za-z0-9_-]{11}$/.test(id))return '';return 'https://www.youtube-nocookie.com/embed/'+id;
+  }catch(e){return ''}
+}
+function createVideoCard(videoURL,title){
+  const embed=youtubeEmbedUrl(videoURL);if(!embed)return null;
+  const card=document.createElement('section');card.className='video-card';
+  const heading=document.createElement('h3');heading.textContent='▶ Watch the trick / वीडियो देखकर सीखें';
+  const frame=document.createElement('div');frame.className='video-frame';
+  const iframe=document.createElement('iframe');iframe.src=embed;iframe.title='YouTube lesson: '+String(title||'Math Magic trick');iframe.loading='lazy';iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';iframe.allowFullscreen=true;
+  frame.append(iframe);const caption=document.createElement('p');caption.className='video-caption';caption.textContent='YouTube video / YouTube पर वीडियो';card.append(heading,frame,caption);return card;
+}
+function renderTrickVideo(videoURL,title){const host=document.getElementById('trick-video');if(!host)return;host.replaceChildren();const card=createVideoCard(videoURL,title);if(card)host.append(card)}
 function renderTrickLibrary(){const select=document.getElementById('libraryDate');if(!select)return;select.replaceChildren();const today=localISODate();const eligible=allTrickRows.map(r=>({raw:r,trick:adaptRow(r)})).filter(x=>{const d=previewISODate(x.trick.date||x.raw.date||x.raw.Date);const pub=String(x.raw.published??x.raw.Published??'TRUE').trim().toUpperCase();return d&&d<today&&!['FALSE','NO','0','DRAFT','UNPUBLISHED'].includes(pub)}).sort((a,b)=>previewISODate(b.trick.date||b.raw.date||b.raw.Date).localeCompare(previewISODate(a.trick.date||a.raw.date||a.raw.Date)));if(!eligible.length){select.add(new Option('No previous published tricks available',''));return}select.add(new Option('Select a previous trick / पुरानी ट्रिक चुनें',''));eligible.forEach(({trick:t,raw})=>{const d=previewISODate(t.date||raw.date||raw.Date);const title=t.title||'Math Trick';const option=new Option(d+' — '+title,d);select.add(option)});select.onchange=()=>{const picked=eligible.find(({trick:t,raw})=>previewISODate(t.date||raw.date||raw.Date)===select.value);const detail=document.getElementById('libraryDetail');if(!picked){detail.replaceChildren();return}showLibraryLesson(picked.trick)};const detail=document.getElementById('libraryDetail');detail.replaceChildren()}
-function showLibraryLesson(t){const host=document.getElementById('libraryDetail');host.replaceChildren();const card=document.createElement('article');card.className='card';card.style.marginTop='12px';const top=document.createElement('div');top.className='row';const pill=document.createElement('span');pill.className='pill';pill.textContent='📚 PREVIOUS TRICK';const date=document.createElement('span');date.className='date';date.textContent=t.date||'';top.append(pill,date);const title=document.createElement('h1');title.textContent=t.title||'Math Trick';title.style.marginTop='8px';const intro=document.createElement('p');intro.className='small';safeFormatted(intro,t.intro||'');const grid=document.createElement('div');grid.className='tgrid';const left=document.createElement('div');const imageHost=document.createElement('div');if(t.imageURL){const im=document.createElement('img');im.src=t.imageURL;im.alt='Infographic for '+(t.title||'trick');im.style.width='100%';im.style.height='auto';im.style.borderRadius='12px';im.style.border='1px solid var(--line)';im.loading='lazy';im.style.cursor='zoom-in';im.addEventListener('click',()=>{const lb=document.getElementById('lb'),lbImg=document.getElementById('lbImg');if(lb&&lbImg){lbImg.src=t.imageURL;lb.classList.add('on')}});imageHost.append(im);const zoom=document.createElement('span');zoom.className='zoomtip';zoom.textContent='🔍 Tap to zoom';left.append(imageHost,zoom)}const right=document.createElement('div');const eq=document.createElement('div');eq.className='equation';eq.textContent=(t.exampleQuestion||'')+(t.exampleQuestion?' = ':'')+(t.exampleAnswer||'');right.append(eq);const steps=document.createElement('div');(Array.isArray(t.steps)?t.steps:[]).forEach((st,i)=>{const row=document.createElement('div');row.className='step';const n=document.createElement('span');n.className='stepno';n.textContent=String(i+1);const p=document.createElement('p');const strong=document.createElement('strong');strong.textContent=(st.label||st.title||'Step '+(i+1))+': ';const txt=document.createElement('span');safeFormatted(txt,st.text||st.explanation||'');p.append(strong,txt);row.append(n,p);steps.append(row)});right.append(steps);if(t.hint){const hint=document.createElement('div');hint.className='hint';const strong=document.createElement('strong');strong.textContent='💡 Remember: ';const txt=document.createElement('span');safeFormatted(txt,t.hint);hint.append(strong,txt);right.append(hint)}if(t.note){const note=document.createElement('p');note.className='small';note.style.marginTop='10px';safeFormatted(note,t.note);right.append(note)}grid.append(left,right);card.append(top,title,intro,grid);
+function showLibraryLesson(t){const host=document.getElementById('libraryDetail');host.replaceChildren();const card=document.createElement('article');card.className='card';card.style.marginTop='12px';const top=document.createElement('div');top.className='row';const pill=document.createElement('span');pill.className='pill';pill.textContent='📚 PREVIOUS TRICK';const date=document.createElement('span');date.className='date';date.textContent=t.date||'';top.append(pill,date);const title=document.createElement('h1');title.textContent=t.title||'Math Trick';title.style.marginTop='8px';const intro=document.createElement('p');intro.className='small';safeFormatted(intro,t.intro||'');const grid=document.createElement('div');grid.className='tgrid';const left=document.createElement('div');const imageHost=document.createElement('div');const libraryVideo=createVideoCard(t.videoURL,t.title);if(libraryVideo)left.append(libraryVideo);if(t.imageURL){const showImage=document.createElement('button');showImage.type='button';showImage.className='button secondary block';showImage.style.marginTop='12px';showImage.textContent='🖼️ View Infographic / इन्फोग्राफिक देखें';const imageBox=document.createElement('div');imageBox.hidden=true;showImage.addEventListener('click',()=>{if(imageBox.hidden){imageBox.hidden=false;showImage.textContent='⏳ Loading infographic…';const im=document.createElement('img');im.alt='Infographic for '+(t.title||'trick');im.style.width='100%';im.style.height='auto';im.style.borderRadius='12px';im.style.border='1px solid var(--line)';im.loading='eager';im.src=t.imageURL;im.onload=()=>{showImage.hidden=true};im.onerror=()=>{imageBox.replaceChildren();const msg=document.createElement('p');msg.className='small';msg.textContent='Infographic could not load. Please try again. / इन्फोग्राफिक लोड नहीं हुआ। फिर कोशिश करें।';imageBox.append(msg);showImage.textContent='🔄 Retry infographic / फिर कोशिश करें'};imageBox.append(im)}else{imageBox.hidden=true}});left.append(showImage,imageBox)}const right=document.createElement('div');const eq=document.createElement('div');eq.className='equation';eq.textContent=(t.exampleQuestion||'')+(t.exampleQuestion?' = ':'')+(t.exampleAnswer||'');right.append(eq);const steps=document.createElement('div');(Array.isArray(t.steps)?t.steps:[]).forEach((st,i)=>{const row=document.createElement('div');row.className='step';const n=document.createElement('span');n.className='stepno';n.textContent=String(i+1);const p=document.createElement('p');const strong=document.createElement('strong');strong.textContent=(st.label||st.title||'Step '+(i+1))+': ';const txt=document.createElement('span');safeFormatted(txt,st.text||st.explanation||'');p.append(strong,txt);row.append(n,p);steps.append(row)});right.append(steps);if(t.hint){const hint=document.createElement('div');hint.className='hint';const strong=document.createElement('strong');strong.textContent='💡 Remember: ';const txt=document.createElement('span');safeFormatted(txt,t.hint);hint.append(strong,txt);right.append(hint)}if(t.note){const note=document.createElement('p');note.className='small';note.style.marginTop='10px';safeFormatted(note,t.note);right.append(note)}grid.append(left,right);card.append(top,title,intro,grid);
 const qs=Array.isArray(t.questions)?t.questions:[];
 const practice=document.createElement('section');practice.style.marginTop='18px';
 const practiceTitle=document.createElement('h2');practiceTitle.textContent='✍️ Practice Questions / अभ्यास प्रश्न';practice.append(practiceTitle);
@@ -361,7 +380,7 @@ qs.forEach((q,i)=>{const wrap=document.createElement('div');wrap.className='ques
 const check=async()=>{if(btn.disabled)return;const v=input.value.trim().replace(/,/g,'');if(!v){fb.textContent='Please enter an answer first. / पहले उत्तर लिखें।';fb.className='feedback wrong';return}if(checkedCorrect){fb.textContent='This question has already been answered correctly in this view. / इस प्रश्न का सही उत्तर पहले ही दे चुके हैं।';fb.className='feedback correct';return}const nick=currentNickname();let serverResult=null;if(nick&&endpointReady()){btn.disabled=true;btn.textContent='Checking…';try{serverResult=await postApi({action:'submitAnswer',nickname:nick,participantToken,trickDate:previewISODate(t.date),questionIndex:i,answer:v});}catch(e){fb.textContent='Score server unavailable. Please try again later; no score confirmation was received. / स्कोर सर्वर उपलब्ध नहीं है। बाद में फिर प्रयास करें।';fb.className='feedback wrong';btn.disabled=false;btn.textContent='Check answer / जाँचें';return}finally{btn.disabled=false;btn.textContent='Check answer / जाँचें'}}const correct=serverResult?!!serverResult.correct:v===String(q.answer??q.Answer??'').trim().replace(/,/g,'');if(correct){checkedCorrect=true;const points=serverResult?Number(serverResult.pointsAwarded||0):0;fb.textContent='Correct! / सही उत्तर। '+(serverResult?('Score saved: '+points+' points. '):'Guest practice only; no shared score submitted. / केवल गेस्ट अभ्यास, साझा अंक नहीं। ')+(q.explanation||serverResult?.explanation||'');fb.className='feedback correct';if(nick&&endpointReady()){mode.textContent='🏆 Shared scoring is enabled. Correct answers use the same late-scoring rules and 5-attempt limit as Today. / सही उत्तरों पर वही अंक और 5 प्रयासों की सीमा लागू होगी।';refreshCertificateStatus()}}else{fb.textContent=(serverResult?.message||'Not quite. Try again. / अभी सही नहीं है, फिर प्रयास करें।')+(q.explanation?' '+q.explanation:'');fb.className='feedback wrong'}};btn.addEventListener('click',check);input.addEventListener('keydown',e=>{if(e.key==='Enter')check()});row.append(input,btn);wrap.append(label,row,fb);practice.append(wrap)});
 card.append(practice);host.append(card);host.scrollIntoView({behavior:'smooth',block:'start'})}
 function previewISODate(raw){const v=String(raw||'').trim();if(/^\d{4}-\d{2}-\d{2}/.test(v))return v.slice(0,10);const m=v.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/);if(m){const y=m[3].length===2?'20'+m[3]:m[3];return y+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0')}return v.slice(0,10)}
-function renderTrick(){const t=activeTrick;safeText(document.getElementById('trickTitle'),t.title||'Daily Math Trick');showTrickInfographic(t.imageURL);safeFormatted(document.getElementById('trickIntro'),t.intro);safeText(document.getElementById('mainEquation'),`${t.exampleQuestion||''} = ${t.exampleAnswer||''}`);const steps=document.getElementById('steps');steps.replaceChildren();(t.steps||[]).forEach((s,i)=>{const div=document.createElement('div');div.className='step';const n=document.createElement('span');n.className='stepno';n.textContent=String(i+1);const p=document.createElement('p');const strong=document.createElement('strong');strong.textContent=(s.label||s.title||`Step ${i+1}`)+': ';p.append(strong);const stepText=document.createElement('span');safeFormatted(stepText,s.text||s.explanation||'');p.append(stepText);div.append(n,p);steps.append(div)});safeFormatted(document.getElementById('trickHint'),t.hint||'Read each step carefully and practise with the questions below.');safeText(document.getElementById('trickNote'),t.note||'');renderQuestions();safeText(document.getElementById('bonusLabel'),t.bonusQuestion||'Bonus question');document.getElementById('bonus').value='';document.getElementById('bonusFeedback').textContent='';document.getElementById('sets').textContent=(progress.completed?'1':'0')+'/'+Math.max(1,(t.questions||[]).length?1:1)}
+function renderTrick(){const t=activeTrick;safeText(document.getElementById('trickTitle'),t.title||'Daily Math Trick');showTrickInfographic(t.imageURL);if(t.imageURL)setTimeout(openTodayInfographic,0);renderTrickVideo(t.videoURL,t.title);safeFormatted(document.getElementById('trickIntro'),t.intro);safeText(document.getElementById('mainEquation'),`${t.exampleQuestion||''} = ${t.exampleAnswer||''}`);const steps=document.getElementById('steps');steps.replaceChildren();(t.steps||[]).forEach((s,i)=>{const div=document.createElement('div');div.className='step';const n=document.createElement('span');n.className='stepno';n.textContent=String(i+1);const p=document.createElement('p');const strong=document.createElement('strong');strong.textContent=(s.label||s.title||`Step ${i+1}`)+': ';p.append(strong);const stepText=document.createElement('span');safeFormatted(stepText,s.text||s.explanation||'');p.append(stepText);div.append(n,p);steps.append(div)});safeFormatted(document.getElementById('trickHint'),t.hint||'Read each step carefully and practise with the questions below.');safeText(document.getElementById('trickNote'),t.note||'');renderQuestions();safeText(document.getElementById('bonusLabel'),t.bonusQuestion||'Bonus question');document.getElementById('bonus').value='';document.getElementById('bonusFeedback').textContent='';document.getElementById('sets').textContent=(progress.completed?'1':'0')+'/'+Math.max(1,(t.questions||[]).length?1:1)}
 function renderQuestions(){const host=document.getElementById('practiceQuestions');host.replaceChildren();const qs=activeTrick.questions||[];if(!qs.length){host.textContent='Practice questions will be added soon.';return}qs.forEach((q,i)=>{const wrap=document.createElement('div');wrap.className='question';const label=document.createElement('label');const id='q'+(i+1),fb='fb'+(i+1);label.htmlFor=id;label.textContent=(i+1)+'. '+q.question;const row=document.createElement('div');row.className='answerrow';const input=document.createElement('input');input.id=id;input.inputMode='numeric';input.autocomplete='off';input.placeholder='Your answer';const btn=document.createElement('button');btn.className='button primary';btn.textContent='Check';btn.addEventListener('click',()=>checkAnswer(id,String(q.answer??''),fb,q.explanation||''));const feedback=document.createElement('div');feedback.id=fb;feedback.className='feedback';feedback.setAttribute('aria-live','polite');row.append(input,btn);wrap.append(label,row,feedback);host.append(wrap)});const hint=document.createElement('div');hint.className='hint';const strong=document.createElement('strong');strong.textContent='Hint: ';hint.append(strong,document.createTextNode(activeTrick.hint||'Follow the steps shown above.'));host.append(hint)}
 function loadProgress(){try{const s=localStorage.getItem(STORAGE_KEY);if(s)progress={...progress,...JSON.parse(s)}}catch(e){}}
 function saveProgress(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(progress))}catch(e){}renderProgress()}
@@ -449,34 +468,53 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script>
 function showTrickInfographic(imageUrl) {
   const container = document.getElementById('trick-infographic');
-
-  if (!container) {
-    console.error('Infographic container not found');
-    return;
-  }
-
+  const button = document.getElementById('showInfographicBtn');
+  const actions = document.getElementById('infographicImageActions');
+  const zoom = container ? container.nextElementSibling : null;
+  if (!container || !button) return;
   container.replaceChildren();
-
-  console.log('Infographic URL:', imageUrl);
-
-  if (!imageUrl) {
-    container.classList.remove('imgload');container.textContent = 'No picture for today’s trick.';
+  container.hidden = true;
+  if (actions) actions.hidden = true;
+  if (zoom) zoom.hidden = true;
+  container.dataset.imageUrl = imageUrl || '';
+  container.dataset.loaded = '';
+  button.hidden = !imageUrl;
+  button.textContent = '🖼️ View Infographic / इन्फोग्राफिक देखें';
+}
+function openTodayInfographic() {
+  const container = document.getElementById('trick-infographic');
+  const button = document.getElementById('showInfographicBtn');
+  const actions = document.getElementById('infographicImageActions');
+  const zoom = container ? container.nextElementSibling : null;
+  if (!container || !button) return;
+  const imageUrl = container.dataset.imageUrl || '';
+  if (!imageUrl) return;
+  container.hidden = false;
+  if (actions) actions.hidden = false;
+  if (zoom) zoom.hidden = false;
+  if (container.dataset.loaded === 'yes') {
+    button.hidden = true;
     return;
   }
-
+  button.textContent = '⏳ Loading infographic… / इन्फोग्राफिक लोड हो रहा है…';
   const img = document.createElement('img');
   img.src = imageUrl;
   img.alt = 'Math Magic trick infographic';
+  img.loading = 'eager';
+  img.decoding = 'async';
   img.style.maxWidth = '100%';
   img.style.height = 'auto';
-
-  img.decoding = 'async';
-  img.fetchPriority = 'high';
-  container.classList.add('imgload');
-  img.onload = () => container.classList.remove('imgload');
-  img.onerror = () => { container.classList.remove('imgload'); container.replaceChildren(); const m=document.createElement('div'); m.className='imgmsg'; m.textContent='The picture is taking long to load. Please check your connection and reopen the page. / चित्र लोड होने में देर हो रही है।'; container.appendChild(m); };
-
-  container.appendChild(img);
+  img.onload = () => { container.dataset.loaded = 'yes'; button.hidden = true; };
+  img.onerror = () => {
+    container.replaceChildren();
+    const msg = document.createElement('div');
+    msg.className = 'imgmsg';
+    msg.textContent = 'Infographic could not load. Please try again. / इन्फोग्राफिक लोड नहीं हुआ। फिर कोशिश करें।';
+    container.appendChild(msg);
+    button.textContent = '🔄 Retry infographic / फिर कोशिश करें';
+    container.dataset.loaded = '';
+  };
+  container.replaceChildren(img);
 }
 </script>
 <script>
