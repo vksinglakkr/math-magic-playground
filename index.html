@@ -30,6 +30,16 @@ h1,h2,h3{font-family:var(--head);line-height:1.2;margin:0}
 .nickchip{max-width:155px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.38);border-radius:999px;padding:7px 10px;font:600 .78rem Inter, sans-serif;cursor:pointer;flex:none}
 .nick-overlay{position:fixed;inset:0;z-index:9999;background:rgba(9,25,59,.72);display:none;align-items:center;justify-content:center;padding:18px}.nick-overlay.open{display:flex}.nick-dialog{width:min(100%,420px);background:#fff;border-radius:22px;padding:24px;box-shadow:0 20px 60px #0005}.nick-dialog h2{color:var(--navy);font-size:1.35rem;margin-bottom:8px}.nick-dialog p{color:var(--muted);font-size:.92rem}.nick-dialog .field{margin:10px 0}.nick-actions{display:grid;gap:9px;margin-top:12px}.nick-dialog .small{font-size:.8rem}
 
+
+.nick-recovery{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#f7faff}
+.nick-recovery summary,.recovery-panel summary{cursor:pointer;font-weight:700;color:var(--navy);list-style:none}
+.nick-recovery summary::-webkit-details-marker,.recovery-panel summary::-webkit-details-marker{display:none}
+.nick-recovery summary:after,.recovery-panel summary:after{content:'＋';float:right;color:var(--blue);font-weight:800}
+.nick-recovery[open] summary:after,.recovery-panel[open] summary:after{content:'−'}
+.nick-recovery .small{margin:8px 0}
+.recovery-panel{margin:12px 0;border:1px solid #d8e3f5;border-radius:12px;background:#f7faff;padding:12px}
+.recovery-panel-body{padding-top:8px}
+
 /* views */
 .view{display:none;padding:14px 0 10px;animation:fade .25s}.view.on{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -169,11 +179,16 @@ details.acc[open]>summary::after{content:"－"}
     <div id="nicknameDialogError" class="feedback wrong" role="alert"></div>
     <div class="nick-actions">
       <button class="button primary block" type="button" onclick="saveNicknameFromDialog()">Save nickname</button>
-      <button class="button secondary block" type="button" onclick="openRecoveryFromNicknameDialog('create')">🔐 Create Recovery Code</button>
-      <button class="button secondary block" type="button" onclick="openRecoveryFromNicknameDialog('recover')">♻️ I already have a Recovery Code</button>
-      <button class="button ghost block" type="button" onclick="continueAsGuest()">Continue as Guest — no shared score</button>
+      <button class="button secondary block" type="button" onclick="continueAsGuest()">Continue as Guest — no shared score</button>
     </div>
-    <p class="small">Recommended: create a Recovery Code to use the same participant and score on Chrome, Edge or mobile. Keep it private. You can also create it later from My Progress.</p>
+    <details class="nick-recovery">
+      <summary>🔐 Secure your score across devices</summary>
+      <p class="small">Create a Recovery Code to use the same participant and score on Chrome, Edge or mobile. Already have one? Recover your participant.</p>
+      <div class="nick-actions">
+        <button class="button secondary block" type="button" onclick="openRecoveryFromNicknameDialog('create')">Create Recovery Code</button>
+        <button class="button secondary block" type="button" onclick="openRecoveryFromNicknameDialog('recover')">I already have a Recovery Code</button>
+      </div>
+    </details>
   </div>
 </div>
 
@@ -218,14 +233,15 @@ details.acc[open]>summary::after{content:"－"}
 <p class="small">No real name, phone, email or account needed. Practise on five different daily tricks to become eligible.</p>
 <label for="publicNickname">Optional nickname (3–24 characters)</label>
 <input class="field" id="publicNickname" maxlength="24" autocomplete="off" placeholder="e.g. MathStar27">
-<div class="recovery-panel" style="margin:12px 0;padding:12px;border:1px solid #d8e3f5;border-radius:12px;background:#f7faff">
-<h3 style="margin:0 0 8px">🔐 Participant Recovery / प्रोफ़ाइल वापस पाएँ</h3>
+<details class="recovery-panel">
+<summary>🔐 Participant Recovery / प्रोफ़ाइल वापस पाएँ</summary>
+<div class="recovery-panel-body">
 <p class="small">Create your own 6-digit code to use the same participant and score on Chrome, Edge or mobile. Keep it private.</p>
 <label for="recoveryCode">Your 6-digit recovery code</label><input class="field" id="recoveryCode" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="Choose 6 digits">
 <label for="recoveryCodeConfirm">Confirm code (for creating)</label><input class="field" id="recoveryCodeConfirm" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="Re-enter 6 digits">
 <div class="action-row"><button class="button primary" onclick="createParticipantRecovery()">Create / Update Code</button><button class="button secondary" onclick="recoverParticipant()">Recover Existing Participant</button></div>
 <p id="recoveryStatus" class="feedback" role="status" aria-live="polite"></p>
-</div>
+</div></details>
 <div class="action-row"><button class="button primary" onclick="saveNicknameAndRefresh()">Use nickname</button><button class="button secondary" onclick="refreshCertificateStatus()">Check eligibility</button><button class="button secondary" onclick="requestCertificate()">🎓 Certificate</button><button class="button secondary" onclick="loadLeaderboard()">Refresh Top 10</button></div>
 <p id="certificateStatus" class="feedback" role="status" aria-live="polite">Practise on five different daily tricks. A nickname is optional.</p>
 <div id="leaderboardWrap"><h3>🏆 Top 10 — entire series</h3><p class="small">Top 10 appears when the score endpoint is connected.</p></div><div id="certificateResult" class="small"></div>
@@ -509,7 +525,7 @@ function openRecoveryFromNicknameDialog(mode){
   const meButton=document.querySelector('[data-go="me"]');if(meButton)meButton.click();
   const details=document.querySelector('#v-me details.acc');if(details)details.open=true;
   const panel=document.querySelector('#v-me .recovery-panel');
-  if(panel){panel.scrollIntoView({behavior:'smooth',block:'center'});}
+  if(panel){panel.open=true;panel.scrollIntoView({behavior:'smooth',block:'center'});}
   const status=document.getElementById('recoveryStatus');
   if(status)status.textContent=mode==='create'?'Enter and confirm a 6-digit code below, then select Create / Update Code.':'Enter your existing 6-digit code below and select Recover Existing Participant.';
   const code=document.getElementById('recoveryCode');if(code)code.focus({preventScroll:true});
