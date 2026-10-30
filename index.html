@@ -172,23 +172,54 @@ details.acc[open]>summary::after{content:"－"}
 
 <div class="nick-overlay" id="nicknameOverlay" role="dialog" aria-modal="true" aria-labelledby="nicknameDialogTitle">
   <div class="nick-dialog">
-    <h2 id="nicknameDialogTitle">Welcome to Math Magic! 👋</h2>
-    <p>Choose a nickname to save your score on the shared leaderboard. Please do not use your real name or contact details.</p>
-    <label for="nicknameDialogInput">Nickname (3–24 characters)</label>
-    <input class="field" id="nicknameDialogInput" maxlength="24" autocomplete="off" placeholder="e.g. MathStar27">
-    <div id="nicknameDialogError" class="feedback wrong" role="alert"></div>
-    <div class="nick-actions">
-      <button class="button primary block" type="button" onclick="saveNicknameFromDialog()">Save nickname</button>
-      <button class="button secondary block" type="button" onclick="continueAsGuest()">Continue as Guest — no shared score</button>
-    </div>
-    <details class="nick-recovery">
-      <summary>🔐 Secure your score across devices</summary>
-      <p class="small">Create a Recovery Code to use the same participant and score on Chrome, Edge or mobile. Already have one? Recover your participant.</p>
+    <section id="welcomeChoices">
+      <h2 id="nicknameDialogTitle">Welcome to Math Magic! 👋</h2>
+      <p>Choose how you want to continue.</p>
       <div class="nick-actions">
-        <button class="button secondary block" type="button" onclick="openRecoveryFromNicknameDialog('create')">Create Recovery Code</button>
-        <button class="button secondary block" type="button" onclick="openRecoveryFromNicknameDialog('recover')">I already have a Recovery Code</button>
+        <button class="button primary block" type="button" onclick="showWelcomeScreen('recover')">🔐 Recover Existing Participant</button>
+        <button class="button secondary block" type="button" onclick="showWelcomeScreen('create')">✨ Create New Participant</button>
+        <button class="button secondary block" type="button" onclick="continueAsGuest()">Continue as Guest</button>
       </div>
-    </details>
+      <p class="small" style="margin-top:12px">No real name, phone, email or account needed.</p>
+    </section>
+    <section id="welcomeCreate" hidden>
+      <h2>Create New Participant</h2>
+      <p>Choose a nickname to save your score on the shared leaderboard. Please do not use your real name or contact details.</p>
+      <label for="nicknameDialogInput">Nickname (3–24 characters)</label>
+      <input class="field" id="nicknameDialogInput" maxlength="24" autocomplete="off" placeholder="e.g. MathStar27">
+      <div id="nicknameDialogError" class="feedback wrong" role="alert"></div>
+      <div class="nick-actions">
+        <button class="button primary block" type="button" onclick="saveNicknameFromDialog()">Save nickname & continue</button>
+        <button class="button secondary block" type="button" onclick="showWelcomeScreen('createRecovery')">🔐 Also create a Recovery Code</button>
+        <button class="button secondary block" type="button" onclick="showWelcomeScreen('home')">← Back</button>
+      </div>
+    </section>
+    <section id="welcomeRecover" hidden>
+      <h2>Recover Existing Participant</h2>
+      <p>Enter the nickname you used before and your 6-digit recovery code.</p>
+      <label for="recoverNicknameInput">Your nickname</label>
+      <input class="field" id="recoverNicknameInput" maxlength="24" autocomplete="off" placeholder="Nickname used before">
+      <label for="recoverCodeInput">6-digit recovery code</label>
+      <input class="field" id="recoverCodeInput" type="password" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="Enter 6 digits">
+      <div id="recoverDialogError" class="feedback wrong" role="alert"></div>
+      <div class="nick-actions">
+        <button class="button primary block" type="button" onclick="recoverFromWelcome()">Recover My Score</button>
+        <button class="button secondary block" type="button" onclick="showWelcomeScreen('home')">← Back</button>
+      </div>
+    </section>
+    <section id="welcomeCreateRecovery" hidden>
+      <h2>Create Recovery Code</h2>
+      <p>Choose a 6-digit code. Keep it private to access your score on another device.</p>
+      <label for="createCodeInput">6-digit recovery code</label>
+      <input class="field" id="createCodeInput" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="Choose 6 digits">
+      <label for="confirmCodeInput">Confirm code</label>
+      <input class="field" id="confirmCodeInput" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="Re-enter 6 digits">
+      <div id="createRecoveryError" class="feedback wrong" role="alert"></div>
+      <div class="nick-actions">
+        <button class="button primary block" type="button" onclick="createRecoveryFromWelcome()">Create Recovery Code</button>
+        <button class="button secondary block" type="button" onclick="showWelcomeScreen('create')">← Back</button>
+      </div>
+    </section>
   </div>
 </div>
 
@@ -513,22 +544,47 @@ function escapeHtmlClient(s){return String(s||'').replace(/&/g,'&amp;').replace(
 async function loadLeaderboard(){const host=document.getElementById('leaderboardWrap');if(!endpointReady()){host.innerHTML='<h3 style="margin-top:20px">Top 10 — entire series</h3><p>Connect the Apps Script Web App to load shared nickname scores.</p>';return}try{const r=await fetch(SHEETS_API_URL+'?action=leaderboard',{cache:'no-store'}),d=await r.json();host.replaceChildren();const h=document.createElement('h3');h.textContent='Top 10 — entire series';host.append(h);if(!d.leaderboard||!d.leaderboard.length){host.append(document.createTextNode('No scores yet.'));return}const table=document.createElement('table');table.className='leaderboard';const thead=document.createElement('thead'),tr=document.createElement('tr');['Rank','Nickname','Points','Accuracy'].forEach(x=>{const th=document.createElement('th');th.textContent=x;tr.append(th)});thead.append(tr);table.append(thead);const tbody=document.createElement('tbody');d.leaderboard.forEach(x=>{const row=document.createElement('tr');[x.rank,x.nickname,x.points,x.accuracy+'%'].forEach(v=>{const td=document.createElement('td');td.textContent=String(v);row.append(td)});tbody.append(row)});table.append(tbody);host.append(table)}catch(e){host.textContent='Leaderboard is temporarily unavailable.'}}
 function escapeHtmlClient(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
 function updateNicknameHeader(){const b=document.getElementById('headerNickname');if(!b)return;b.textContent=nickname?'👤 '+nickname+' ✎':'👤 Set Nickname';b.title=nickname?'Change nickname':'Set nickname';}
-function openNicknameDialog(){const overlay=document.getElementById('nicknameOverlay');if(!overlay)return;const input=document.getElementById('nicknameDialogInput');const err=document.getElementById('nicknameDialogError');if(err)err.textContent='';if(input)input.value=nickname||'';overlay.classList.add('open');setTimeout(()=>input&&input.focus(),30)}
+function openNicknameDialog(){showWelcomeScreen('home');const overlay=document.getElementById('nicknameOverlay');if(!overlay)return;overlay.classList.add('open');}
+function showWelcomeScreen(screen){
+  const ids={home:'welcomeChoices',create:'welcomeCreate',recover:'welcomeRecover',createRecovery:'welcomeCreateRecovery'};
+  Object.values(ids).forEach(id=>{const el=document.getElementById(id);if(el)el.hidden=true;});
+  const target=document.getElementById(ids[screen]||ids.home);if(target)target.hidden=false;
+  const errIds=['nicknameDialogError','recoverDialogError','createRecoveryError'];errIds.forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='';});
+  if(screen==='create'){const input=document.getElementById('nicknameDialogInput');if(input){input.value=nickname||'';setTimeout(()=>input.focus(),20)}}
+  if(screen==='recover'){const ni=document.getElementById('recoverNicknameInput');if(ni)ni.value=nickname||'';setTimeout(()=>document.getElementById('recoverCodeInput')?.focus(),20)}
+  if(screen==='createRecovery'){const input=document.getElementById('createCodeInput');if(input)setTimeout(()=>input.focus(),20)}
+}
 function closeNicknameDialog(){const overlay=document.getElementById('nicknameOverlay');if(overlay)overlay.classList.remove('open')}
-function openRecoveryFromNicknameDialog(mode){
-  const raw=document.getElementById('nicknameDialogInput')?.value.trim()||'';
-  if(!/^[\p{L}\p{N} _.-]{3,24}$/u.test(raw)){
-    const err=document.getElementById('nicknameDialogError');if(err)err.textContent='Please enter a valid nickname first (3–24 characters).';return;
-  }
-  const field=document.getElementById('publicNickname');if(field)field.value=raw;
-  closeNicknameDialog();
-  const meButton=document.querySelector('[data-go="me"]');if(meButton)meButton.click();
-  const details=document.querySelector('#v-me details.acc');if(details)details.open=true;
-  const panel=document.querySelector('#v-me .recovery-panel');
-  if(panel){panel.open=true;panel.scrollIntoView({behavior:'smooth',block:'center'});}
+async function recoverFromWelcome(){
+  const nick=document.getElementById('recoverNicknameInput')?.value.trim()||'';
+  const code=document.getElementById('recoverCodeInput')?.value.trim()||'';
+  const err=document.getElementById('recoverDialogError');
+  if(!/^[\p{L}\p{N} _.-]{3,24}$/u.test(nick)){if(err)err.textContent='Enter the nickname you used before (3–24 characters).';return;}
+  if(!/^\d{6}$/.test(code)){if(err)err.textContent='Enter your 6-digit recovery code.';return;}
+  const publicNick=document.getElementById('publicNickname');if(publicNick)publicNick.value=nick;
+  const recoveryCode=document.getElementById('recoveryCode');if(recoveryCode)recoveryCode.value=code;
+  const confirm=document.getElementById('recoveryCodeConfirm');if(confirm)confirm.value='';
+  await recoverParticipant();
   const status=document.getElementById('recoveryStatus');
-  if(status)status.textContent=mode==='create'?'Enter and confirm a 6-digit code below, then select Create / Update Code.':'Enter your existing 6-digit code below and select Recover Existing Participant.';
-  const code=document.getElementById('recoveryCode');if(code)code.focus({preventScroll:true});
+  if(status&&!status.classList.contains('wrong')){closeNicknameDialog();location.reload();}
+  else if(err&&status)err.textContent=status.textContent;
+}
+async function createRecoveryFromWelcome(){
+  const raw=document.getElementById('nicknameDialogInput')?.value.trim()||'';
+  const code=document.getElementById('createCodeInput')?.value.trim()||'';
+  const confirmCode=document.getElementById('confirmCodeInput')?.value.trim()||'';
+  const err=document.getElementById('createRecoveryError');
+  if(!/^[\p{L}\p{N} _.-]{3,24}$/u.test(raw)){if(err)err.textContent='First enter a valid nickname (3–24 characters).';return;}
+  if(!/^\d{6}$/.test(code)){if(err)err.textContent='Choose exactly 6 digits.';return;}
+  if(code!==confirmCode){if(err)err.textContent='The two codes do not match.';return;}
+  const nickField=document.getElementById('publicNickname');if(nickField)nickField.value=raw;
+  nickname=raw;try{localStorage.setItem(NICKNAME_KEY,raw);localStorage.removeItem('digitalSaathiMathMagicGuestChosen_v1')}catch(e){}
+  const codeField=document.getElementById('recoveryCode');if(codeField)codeField.value=code;
+  const confirmField=document.getElementById('recoveryCodeConfirm');if(confirmField)confirmField.value=confirmCode;
+  await createParticipantRecovery();
+  const status=document.getElementById('recoveryStatus');
+  if(status&&!status.classList.contains('wrong')){updateNicknameHeader();closeNicknameDialog();location.reload();}
+  else if(err&&status)err.textContent=status.textContent;
 }
 function continueAsGuest() {
   // Clear the active nickname
@@ -576,7 +632,7 @@ async function saveNicknameFromDialog() {
     location.reload();
   }
 }
-document.addEventListener('DOMContentLoaded',()=>{const headerBtn=document.getElementById('headerNickname');if(headerBtn)headerBtn.addEventListener('click',openNicknameDialog);const field=document.getElementById('publicNickname');if(nickname&&field)field.value=nickname;updateNicknameHeader();let guestChosen=false;try{guestChosen=localStorage.getItem('digitalSaathiMathMagicGuestChosen_v1')==='yes'}catch(e){}if(!nickname&&!guestChosen)openNicknameDialog();const overlay=document.getElementById('nicknameOverlay');if(overlay)overlay.addEventListener('click',e=>{if(e.target===overlay)continueAsGuest()});const input=document.getElementById('nicknameDialogInput');if(input)input.addEventListener('keydown',e=>{if(e.key==='Enter')saveNicknameFromDialog();if(e.key==='Escape')continueAsGuest()})});
+document.addEventListener('DOMContentLoaded',()=>{const headerBtn=document.getElementById('headerNickname');if(headerBtn)headerBtn.addEventListener('click',openNicknameDialog);const field=document.getElementById('publicNickname');if(nickname&&field)field.value=nickname;updateNicknameHeader();let guestChosen=false;try{guestChosen=localStorage.getItem('digitalSaathiMathMagicGuestChosen_v1')==='yes'}catch(e){}if(!nickname&&!guestChosen)openNicknameDialog();const overlay=document.getElementById('nicknameOverlay');if(overlay)overlay.addEventListener('click',e=>{if(e.target===overlay)closeNicknameDialog()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNicknameDialog()});});
 
 loadProgress();renderProgress();
 /* start after every script block is defined (renderTrick uses functions from the later script) */
