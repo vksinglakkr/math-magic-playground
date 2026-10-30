@@ -160,6 +160,9 @@ details.acc[open]>summary::after{content:"－"}
 #trick-infographic img{transition:opacity .35s}
 #trick-infographic .imgmsg{padding:20px 12px;text-align:center;color:var(--muted);font-size:.88rem}
 .status{font-size:.8rem;line-height:1.5}.status .button{margin-top:8px;font-size:.88rem}
+
+[hidden]{display:none!important}
+.my-progress-recovery{margin:14px 0 18px}.my-progress-recovery-choices{margin-top:10px}.my-progress-recovery-choices .button{flex:1;min-width:180px}
 </style></head><body>
 
 <header class="top"><div class="wrap topinner">
@@ -262,17 +265,27 @@ details.acc[open]>summary::after{content:"－"}
 
 <details class="acc"><summary>🎓 Certificate & Top 10</summary><div class="accbody">
 <p class="small">No real name, phone, email or account needed. Practise on five different daily tricks to become eligible.</p>
-<label for="publicNickname">Optional nickname (3–24 characters)</label>
-<input class="field" id="publicNickname" maxlength="24" autocomplete="off" placeholder="e.g. MathStar27">
-<details class="recovery-panel">
-<summary>🔐 Participant Recovery / प्रोफ़ाइल वापस पाएँ</summary>
-<div class="recovery-panel-body">
-<p class="small">Create your own 6-digit code to use the same participant and score on Chrome, Edge or mobile. Keep it private.</p>
-<label for="recoveryCode">Your 6-digit recovery code</label><input class="field" id="recoveryCode" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="Choose 6 digits">
-<label for="recoveryCodeConfirm">Confirm code (for creating)</label><input class="field" id="recoveryCodeConfirm" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="Re-enter 6 digits">
-<div class="action-row"><button class="button primary" onclick="createParticipantRecovery()">Create / Update Code</button><button class="button secondary" onclick="recoverParticipant()">Recover Existing Participant</button></div>
+<div class="my-progress-recovery" aria-label="Participant recovery options">
+<p class="small">Your nickname is hidden until you choose an action.</p>
+<div class="action-row my-progress-recovery-choices">
+<button class="button primary" type="button" onclick="showProgressRecoveryMode('recover')">🔐 Recover Existing Participant</button>
+<button class="button secondary" type="button" onclick="showProgressRecoveryMode('create')">✨ Create Recovery Code</button>
+</div>
+<div id="progressRecoveryForm" class="recovery-panel-body" hidden>
+<label for="publicNickname">Nickname (3–24 characters)</label>
+<input class="field" id="publicNickname" maxlength="24" autocomplete="off" placeholder="Enter the nickname used before">
+<p id="progressRecoveryHint" class="small">Enter the nickname and recovery code you used before.</p>
+<label for="recoveryCode">Your 6-digit recovery code</label><input class="field" id="recoveryCode" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="Enter 6 digits">
+<div id="recoveryConfirmGroup" hidden>
+<label for="recoveryCodeConfirm">Confirm recovery code</label><input class="field" id="recoveryCodeConfirm" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="Re-enter 6 digits">
+</div>
+<div class="action-row">
+<button id="progressRecoverySubmit" class="button primary" type="button" onclick="submitProgressRecoveryMode()">Recover My Score</button>
+<button class="button secondary" type="button" onclick="closeProgressRecoveryMode()">← Back</button>
+</div>
 <p id="recoveryStatus" class="feedback" role="status" aria-live="polite"></p>
-</div></details>
+</div>
+</div>
 <div class="action-row"><button class="button primary" onclick="saveNicknameAndRefresh()">Use nickname</button><button class="button secondary" onclick="refreshCertificateStatus()">Check eligibility</button><button class="button secondary" onclick="requestCertificate()">🎓 Certificate</button><button class="button secondary" onclick="loadLeaderboard()">Refresh Top 10</button></div>
 <p id="certificateStatus" class="feedback" role="status" aria-live="polite">Practise on five different daily tricks. A nickname is optional.</p>
 <div id="leaderboardWrap"><h3>🏆 Top 10 — entire series</h3><p class="small">Top 10 appears when the score endpoint is connected.</p></div><div id="certificateResult" class="small"></div>
@@ -522,6 +535,45 @@ function shareChallenge(){const text='Can you solve '+(activeTrick.bonusQuestion
 
 function endpointReady(){return SHEETS_API_URL.startsWith('https://script.google.com/');}
 async function postApi(payload){if(!endpointReady())throw new Error('Endpoint not configured');const request={...payload};if(recoveredParticipantHash&&!request.participantHash)request.participantHash=recoveredParticipantHash;const body=new URLSearchParams({payload:JSON.stringify(request)});const r=await fetch(SHEETS_API_URL,{method:'POST',body});if(!r.ok)throw new Error('Request failed');const data=await r.json();if(data.error)throw new Error(data.error);return data}
+let progressRecoveryMode='';
+function showProgressRecoveryMode(mode){
+  progressRecoveryMode=mode==='create'?'create':'recover';
+  const form=document.getElementById('progressRecoveryForm');
+  const confirmGroup=document.getElementById('recoveryConfirmGroup');
+  const submit=document.getElementById('progressRecoverySubmit');
+  const hint=document.getElementById('progressRecoveryHint');
+  const nicknameField=document.getElementById('publicNickname');
+  const codeField=document.getElementById('recoveryCode');
+  const confirmField=document.getElementById('recoveryCodeConfirm');
+  const status=document.getElementById('recoveryStatus');
+  if(nicknameField)nicknameField.value=nickname||'';
+  if(codeField)codeField.value='';
+  if(confirmField)confirmField.value='';
+  if(status){status.textContent='';status.className='feedback';}
+  if(form)form.hidden=false;
+  if(confirmGroup)confirmGroup.hidden=progressRecoveryMode!=='create';
+  if(submit){submit.textContent=progressRecoveryMode==='create'?'Create / Update Recovery Code':'Recover My Score';submit.onclick=null;}
+  if(hint)hint.textContent=progressRecoveryMode==='create'?'Choose a 6-digit code to secure this nickname and score. Keep it private.':'Enter the nickname and 6-digit recovery code you used before.';
+  if(nicknameField)nicknameField.placeholder=progressRecoveryMode==='create'?'Choose a nickname for your shared score':'Enter the nickname used before';
+  if(submit)submit.onclick=submitProgressRecoveryMode;
+  setTimeout(()=>nicknameField?.focus(),20);
+}
+function closeProgressRecoveryMode(){
+  progressRecoveryMode='';
+  const form=document.getElementById('progressRecoveryForm');if(form)form.hidden=true;
+  const code=document.getElementById('recoveryCode');if(code)code.value='';
+  const confirm=document.getElementById('recoveryCodeConfirm');if(confirm)confirm.value='';
+  const status=document.getElementById('recoveryStatus');if(status){status.textContent='';status.className='feedback';}
+}
+async function submitProgressRecoveryMode(){
+  if(progressRecoveryMode==='create'){
+    await saveNicknameAndRefresh();
+    if(!nickname)return;
+    await createParticipantRecovery();
+  }else if(progressRecoveryMode==='recover'){
+    await recoverParticipant();
+  }
+}
 function currentNickname(){const field=document.getElementById('publicNickname');const v=field?field.value.trim():nickname;if(!v)return '';if(!/^[\p{L}\p{N} _.-]{3,24}$/u.test(v))return '';return v}
 async function saveNicknameAndRefresh(){const raw=document.getElementById('publicNickname').value.trim();if(!raw){nickname='';localStorage.removeItem(NICKNAME_KEY);setCertStatus('Nickname cleared. Your learning remains local; no shared leaderboard score will be submitted.',false);return}if(!/^[\p{L}\p{N} _.-]{3,24}$/u.test(raw)){setCertStatus('Use 3–24 letters, numbers, spaces, dots, dashes or underscores. Avoid your real name or contact details.',true);return}nickname=raw;try{localStorage.setItem(NICKNAME_KEY,nickname)}catch(e){}updateNicknameHeader();if(!endpointReady()){setCertStatus('Nickname saved on this device. Connect the Apps Script URL to publish scores.',false);return}setCertStatus('Nickname selected. Scores submitted from this browser use a private token, so the same nickname on another browser has separate scores.',false);await loadLeaderboard();await refreshCertificateStatus()}
 function setRecoveryStatus(message,isError=false){const el=document.getElementById('recoveryStatus');if(el){el.textContent=message;el.className='feedback'+(isError?' wrong':'');}}
