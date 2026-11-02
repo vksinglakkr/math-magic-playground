@@ -44,15 +44,15 @@ footer{text-align:center;padding:22px 12px;color:#5c6f89;line-height:1.8}
 <main>
 <section id="home">
 <div class="hero">
-<h2>Math Magic की आसान गाइड</h2>
-<p>Math Magic Playground में रोज़ नई गणितीय ट्रिक सीखें, अभ्यास करें, दोस्तों को Challenge दें और अपनी प्रगति देखें।</p>
-<p><strong>नीचे किसी भी Tab को चुनें</strong> और जानें कि उसमें क्या कर सकते हैं।</p>
+<h2>✨ Math Magic सीखें, अभ्यास करें और दोस्तों को भी सिखाएँ!</h2>
+<p>Math Magic Playground एक मज़ेदार और सरल जगह है जहाँ आप गणित की ट्रिक्स सीख सकते हैं, सवाल हल कर सकते हैं, दोस्तों को Challenge दे सकते हैं और अपनी प्रगति देख सकते हैं।</p>
+<p><strong>इस गाइड में नीचे दिए गए 7 Tabs का परिचय, Nickname और Scoring Pattern देखें।</strong></p>
 <div class="actions">
 <a class="btn primary" href="https://vksingla.in/mathmagic" target="_blank" rel="noopener">🚀 Math Magic Playground खोलें</a>
 <a class="btn" href="https://vksingla.in/mathmagic#today" target="_blank" rel="noopener">आज की ट्रिक देखें</a>
 </div>
 </div>
-<h2 class="section">Playground के 7 Tabs</h2>
+<h2 class="section">🎯 Playground के 7 Tabs — जानें क्या कर सकते हैं</h2>
 <div class="grid">
 <button class="item" data-img="feature-01-today.png"><b class="num">1</b><span><strong>Today — आज</strong>आज की नई Math Magic ट्रिक सीखें।</span></button>
 <button class="item" data-img="feature-02-practice.png"><b class="num">2</b><span><strong>Practice — अभ्यास</strong>सीखी हुई ट्रिक के सवाल हल करें।</span></button>
@@ -62,7 +62,7 @@ footer{text-align:center;padding:22px 12px;color:#5c6f89;line-height:1.8}
 <button class="item" data-img="feature-06-me.png"><b class="num">6</b><span><strong>Me — मेरी प्रगति</strong>अपने अंक, Accuracy, उपलब्धियाँ और Top 10 देखें।</span></button>
 <button class="item" data-img="feature-07-about.png"><b class="num">7</b><span><strong>About — परिचय</strong>Digital Saathi पहल और संपर्क जानकारी।</span></button>
 </div>
-<h2 class="section">अतिरिक्त गाइड</h2>
+<h2 class="section">🔎 अतिरिक्त जानकारी</h2>
 <div class="grid">
 <button class="item" data-info="nickname"><b class="num">🔐</b><span><strong>Nickname & Recovery</strong>अपना Nickname बनाएँ और दूसरे device/browser पर उसे recover करें।</span></button>
 <button class="item" data-info="scoring"><b class="num">⭐</b><span><strong>Scoring Pattern</strong>Daily Practice, Special Test और Challenge के अंक समझें।</span></button>
@@ -90,8 +90,11 @@ scoring:`<div class="info"><h3>Daily Practice — रोज़ाना अभ�
 <div class="info"><h3>ध्यान रखें</h3>सटीक अंक और पात्रता की जानकारी Playground में दिखाई गई scoring सूचना के अनुसार देखें।</div>`
 };
 function openDetail(label,html){title.textContent=label;content.innerHTML=html;home.hidden=true;detail.hidden=false;window.scrollTo({top:0,behavior:'smooth'});}
-document.querySelectorAll('[data-img]').forEach(b=>b.addEventListener('click',()=>openDetail(b.querySelector('strong').textContent,`<img class="guideimg" src="guide/${b.dataset.img}" alt="${b.querySelector('strong').textContent} infographic">`)));
-document.querySelectorAll('[data-info]').forEach(b=>b.addEventListener('click',()=>openDetail(b.querySelector('strong').textContent,info[b.dataset.info])));
+document.querySelectorAll('[data-img]').forEach(b=>b.addEventListener('click',()=>openDetail(b.querySelector('strong').textContent,`<img class="guideimg" src="${b.dataset.img}" alt="${b.querySelector('strong').textContent} infographic">`)));
+document.querySelectorAll('[data-info]').forEach(b=>b.addEventListener('click',()=>{
+ const file=b.dataset.info==='scoring'?'01-scoring-guide.png':'06-me.png';
+ openDetail(b.querySelector('strong').textContent,`<img class="guideimg" src="${file}" alt="${b.querySelector('strong').textContent} infographic">`);
+}));
 function goHome(){detail.hidden=true;home.hidden=false;content.innerHTML='';history.replaceState(null,'',location.pathname+location.search);window.scrollTo({top:0,behavior:'smooth'});}
 document.getElementById('backBtn').addEventListener('click',goHome);
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&!detail.hidden)goHome()});
