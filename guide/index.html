@@ -12,6 +12,22 @@ header h1{margin:0 0 7px;font-size:clamp(1.55rem,4vw,2.45rem);font-weight:800;le
 main{max-width:1120px;margin:28px auto;padding:0 20px 45px}
 #home{background:#ffffffc9;border:1px solid #e2eaf8;border-radius:24px;padding:clamp(16px,3vw,30px);box-shadow:var(--shadow)}
 img.overview{display:block;width:100%;height:auto;border-radius:16px;margin-bottom:25px;box-shadow:0 8px 24px #18396d12}
+.top-home-wrap{margin:0 0 22px}
+.top-home{display:flex;align-items:center;gap:15px;padding:17px 20px;border-radius:20px;text-decoration:none;color:#fff;background:linear-gradient(115deg,#123777 0%,#2459c7 58%,#4a4dd6 100%);box-shadow:0 12px 26px rgba(30,74,157,.22);border:1px solid #ffffff55;transition:transform .18s ease,box-shadow .18s ease}
+.top-home:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(30,74,157,.28)}
+.top-home-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:15px;background:#ffffff20;border:1px solid #ffffff55;font-size:25px}
+.top-home strong{display:block;color:#fff;font-size:1.08rem;font-weight:800}
+.top-home small{display:block;color:#e2ebff;font-size:.86rem;margin-top:2px}
+.top-home-arrow{margin-left:auto;font-size:1.5rem;font-weight:800;color:#ffdf70}
+
+.home-infographic-card{margin:0 0 22px;border:1px solid #d6e3f8;border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 12px 26px rgba(30,74,157,.12)}
+.home-infographic-link{display:block;text-decoration:none;color:inherit}
+.home-infographic{display:block;width:100%;height:auto;max-height:300px;object-fit:contain;object-position:center;background:#f5f8ff}
+.home-infographic-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;background:linear-gradient(110deg,#123777,#2459c7 65%,#454bd2);color:#fff}
+.home-infographic-cta span{font-weight:800;font-size:1.05rem}.home-infographic-cta strong{font-size:.95rem;color:#ffdf70}
+.home-infographic-link:hover .home-infographic-cta{background:linear-gradient(110deg,#0d2d66,#1d4fb8 65%,#353fc5)}
+@media(max-width:650px){.home-infographic-cta{align-items:flex-start;flex-direction:column;gap:4px}.home-infographic-cta strong{font-size:.88rem}}
+
 h2{font-size:clamp(1.15rem,2.4vw,1.5rem);font-weight:800;margin:25px 0 13px;color:var(--navy);display:flex;align-items:center;gap:10px}
 h2:before{content:"";width:5px;height:1.35em;border-radius:5px;background:linear-gradient(var(--cyan),var(--blue));display:inline-block}
 .group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
@@ -42,6 +58,11 @@ footer{text-align:center;padding:24px 12px;color:#657895;font-size:.9rem}
 <header><h1>Math Magic Playground</h1><p>सीखें • अभ्यास करें • अपनी प्रगति देखें</p></header>
 <main>
 <section id="home">
+<div class="top-home-wrap home-infographic-card">
+<a class="home-infographic-link" href="https://vksingla.in/mathmagic" target="_blank" rel="noopener noreferrer" aria-label="Math Magic Playground खोलें">
+<img class="home-infographic" src="home.png" alt="Math Magic Playground — Home / Main Page infographic">
+<span class="home-infographic-cta"><span>🏠 Home / Main Page</span><strong>Click here to open Math Magic Playground ↗</strong></span>
+</a></div>
 <img class="overview" src="00-overview.png" alt="सात सुविधाओं का सरल परिचय">
 <h2>पहले 7 सुविधाओं को समझें</h2>
 <div class="group">
@@ -53,11 +74,9 @@ footer{text-align:center;padding:24px 12px;color:#657895;font-size:.9rem}
 <button data-img="feature-06-me.png"><strong>6. Me</strong><span>अपनी प्रगति देखें</span></button>
 <button data-img="feature-07-about.png"><strong>7. About</strong><span>इस पहल के बारे में जानें</span></button>
 </div>
-<h2>स्कोरिंग और Nickname</h2>
+<h2>स्कोरिंग</h2>
 <div class="group">
 <button data-img="01-scoring-guide.png"><strong>Scoring Guide</strong><span>अंक मिलने का संक्षिप्त तरीका</span></button>
-<button data-img="home.png"><strong>Nickname &amp; Recovery</strong><span>Nickname और recovery code की जानकारी</span></button>
-
 </div>
 </section>
 <section id="detail" hidden><div class="detail-head"><h2 id="detailTitle">विस्तृत जानकारी</h2><button class="back" id="backBtn">← मुख्य पेज पर लौटें</button></div><img id="detailImage" class="detail-img" alt="विस्तृत infographic"></section>
