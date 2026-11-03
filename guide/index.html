@@ -33,6 +33,12 @@ h2:before{content:"";width:5px;height:1.35em;border-radius:5px;background:linear
 .group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
 button{font:inherit;cursor:pointer;border:1px solid #d9e4f6;border-radius:17px;background:linear-gradient(145deg,#fff,#f9fbff);color:var(--ink);padding:17px 18px;text-align:left;box-shadow:0 4px 12px #1c42700a;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;display:flex;align-items:center;gap:14px;min-height:88px}
 button:hover{transform:translateY(-3px);border-color:#9ebcf4;box-shadow:0 11px 23px #214d941b;background:#fff}
+/* Keep Back button blue on hover */
+.back:hover {
+  background: linear-gradient(135deg, #1a478e, #2d65d5);
+  color: #fff;
+  border-color: transparent;
+}
 button:focus-visible{outline:3px solid #8bb9ff;outline-offset:3px}
 button strong{display:block;font-size:1.03rem;font-weight:800;margin-bottom:3px;color:#153b80}
 button span{display:block;font-size:.88rem;color:var(--muted);line-height:1.45}
