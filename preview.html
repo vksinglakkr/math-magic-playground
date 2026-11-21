@@ -323,27 +323,54 @@ function showTrickVideo(videoUrl) {
   const container = document.getElementById('trick-video');
   if (!section || !container) return;
   container.replaceChildren();
+  section.style.display = 'none';
   const raw = String(videoUrl || '').trim();
   let id = '';
+  let facebookUrl = '';
   try {
     const u = new URL(raw);
-    if (['youtube.com','www.youtube.com','m.youtube.com','youtu.be','www.youtu.be'].includes(u.hostname)) {
-      if (u.hostname.includes('youtu.be')) id = u.pathname.split('/').filter(Boolean)[0] || '';
+    if (u.protocol !== 'https:' && u.protocol !== 'http:') return;
+    const host = u.hostname.toLowerCase();
+    if (['youtube.com','www.youtube.com','m.youtube.com','youtu.be','www.youtu.be'].includes(host)) {
+      if (host.endsWith('youtu.be')) id = u.pathname.split('/').filter(Boolean)[0] || '';
       else if (u.pathname === '/watch') id = u.searchParams.get('v') || '';
-      else if (u.pathname.startsWith('/embed/')) id = u.pathname.split('/')[2] || '';
-      else if (u.pathname.startsWith('/shorts/')) id = u.pathname.split('/')[2] || '';
+      else if (/^\/(embed|shorts|live)\//.test(u.pathname)) id = u.pathname.split('/')[2] || '';
+    } else if (['facebook.com','www.facebook.com','m.facebook.com','web.facebook.com','fb.watch','www.fb.watch','fb.com','www.fb.com'].includes(host)) {
+      facebookUrl = u.href;
     }
-  } catch (e) {}
-  if (!/^[A-Za-z0-9_-]{11}$/.test(id)) { section.style.display = 'none'; return; }
-  const iframe = document.createElement('iframe');
-  iframe.src = 'https://www.youtube-nocookie.com/embed/' + id;
-  iframe.title = 'Math Magic trick video';
-  iframe.loading = 'lazy';
-  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-  iframe.allowFullscreen = true;
-  iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-  iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0';
-  container.appendChild(iframe);
+  } catch (e) { return; }
+  if (/^[A-Za-z0-9_-]{11}$/.test(id)) {
+    const iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + id;
+    iframe.title = 'Math Magic trick video';
+    iframe.loading = 'lazy';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    iframe.allowFullscreen = true;
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0';
+    container.appendChild(iframe);
+  } else if (facebookUrl) {
+    container.style.aspectRatio = 'auto';
+    container.style.background = 'transparent';
+    container.style.overflow = 'visible';
+    const link = document.createElement('a');
+    link.href = facebookUrl;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.className = 'button primary block';
+    link.textContent = '▶ Watch on Facebook / Facebook पर वीडियो देखें';
+    container.appendChild(link);
+    const note = document.createElement('p');
+    note.className = 'small';
+    note.style.marginTop = '8px';
+    note.textContent = 'Facebook वीडियो नई टैब या Facebook App में खुलेगा।';
+    container.appendChild(note);
+  } else { return; }
+  if (!facebookUrl) {
+    container.style.aspectRatio = '16/9';
+    container.style.background = '#e2e8f0';
+    container.style.overflow = 'hidden';
+  }
   section.style.display = '';
 }
 function showTrickInfographic(imageUrl) {
